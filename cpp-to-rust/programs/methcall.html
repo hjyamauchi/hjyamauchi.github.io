@@ -1,0 +1,569 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>methcall - C++ to Rust</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">C++ to Rust</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="methcall"><a class="header" href="#methcall">methcall</a></h1>
+<h2 id="full-source-code"><a class="header" href="#full-source-code">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id
+// http://www.bagley.org/~doug/shootout/
+
+// with some help from Bill Lear
+
+#include &lt;stdlib.h&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Toggle {
+public:
+    Toggle(bool start_state) : state(start_state) { }
+    virtual ~Toggle() {  }
+    bool value() {
+        return(state);
+    }
+    virtual Toggle&amp; activate() {
+        state = !state;
+        return(*this);
+    }
+    bool state;
+};
+
+class NthToggle : public Toggle {
+public:
+    NthToggle(bool start_state, int max_counter) :
+        Toggle(start_state), count_max(max_counter), counter(0) {
+    }
+    Toggle&amp; activate() {
+        if (++this-&gt;counter &gt;= this-&gt;count_max) {
+            state = !state;
+            counter = 0;
+        }
+        return(*this);
+    }
+private:
+    int count_max;
+    int counter;
+};
+
+
+int
+main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 100000000
+#else
+#define LENGTH 1000000000
+#endif
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+
+    bool val = true;
+    Toggle *toggle = new Toggle(val);
+    for (int i=0; i&lt;n; i++) {
+        val = toggle-&gt;activate().value();
+    }
+    cout &lt;&lt; ((val) ? "true" : "false") &lt;&lt; endl;
+    delete toggle;
+
+    val = true;
+    NthToggle *ntoggle = new NthToggle(val, 3);
+    for (int i=0; i&lt;n; i++) {
+        val = ntoggle-&gt;activate().value();
+    }
+    cout &lt;&lt; ((val) ? "true" : "false") &lt;&lt; endl;
+    delete ntoggle;
+
+    return 0;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+// with some help from Bill Lear
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 100000000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 1000000000;
+
+struct Toggle {
+    state: bool
+}
+
+impl Toggle {
+    fn new(start_state: bool) -&gt; Toggle {
+        Toggle { state: start_state }
+    }
+}
+
+trait Togglable {
+    fn activate(&amp;mut self);
+    fn value(&amp;self) -&gt; bool;
+}
+
+impl Togglable for Toggle {
+    fn activate(&amp;mut self) {
+        self.state = !self.state;
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+
+struct NthToggle {
+    state: bool,
+    count_max: i32,
+    counter: i32,
+}
+
+impl NthToggle {
+    fn new(start_state: bool, max_counter: i32) -&gt; NthToggle {
+        NthToggle {
+            state: start_state,
+            count_max: max_counter,
+            counter: 0,
+        }
+    }
+}
+
+impl Togglable for NthToggle {
+    fn activate(&amp;mut self) {
+        self.counter += 1;
+        if self.counter &gt;= self.count_max {
+            self.state = !self.state;
+            self.counter = 0;
+        }
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut val = true;
+    let mut toggle = Toggle::new(val);
+    for _i in 0..n {
+        toggle.activate();
+        val = toggle.value();
+    }
+    println!("{}", if val { "true" } else { "false" });
+
+    val = true;
+    let mut ntoggle = NthToggle::new(val, 3);
+    for _i in 0..n {
+        ntoggle.activate();
+        val = ntoggle.value();
+    }
+    println!("{}", if val { "true" } else { "false" });
+}</code></pre></pre>
+<h2 id="porting-notes"><a class="header" href="#porting-notes">Porting notes</a></h2>
+<h3 id="declaring-a-struct-in-place-for-a-class"><a class="header" href="#declaring-a-struct-in-place-for-a-class">Declaring a struct in place for a class</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">class Toggle {
+public:
+    Toggle(bool start_state) : state(start_state) { }
+    virtual ~Toggle() {  }
+    bool value() {
+        return(state);
+    }
+    virtual Toggle&amp; activate() {
+        state = !state;
+        return(*this);
+    }
+    bool state;
+};
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Toggle {
+    state: bool
+}
+
+impl Toggle {
+    fn new(start_state: bool) -&gt; Toggle {
+        Toggle { state: start_state }
+    }
+}
+
+trait Togglable {
+    fn activate(&amp;mut self);
+    fn value(&amp;self) -&gt; bool;
+}
+
+impl Togglable for Toggle {
+    fn activate(&amp;mut self) {
+        self.state = !self.state;
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>There are no classes and structs are used in Rust.</p>
+<p>Member variables and methods aren't placed together in a Rust struct. Member variables are declared in the struct and member methods are declared in the <code>impl</code> block for the struct.</p>
+<p>The <code>new</code> method, which is like a C++ constructor, is usually used to create an instance of the struct. The struct values are often initialized with struct literals, as in <code>Toggle { state: start_state }</code>, as opposed to the C++ member-by-member style.</p>
+<p>The <code>drop</code> method, which is analogous to a C++ destructor but is often omitted because the owership takes care of destruction unless the struct requires a custom logic for deinitization like resource reclamation.</p>
+<p>The methods <code>activate</code> and <code>value</code> would be put in the <code>impl Toggle { ... }</code> otherwise but they are put into a trait <code>Togglable</code> here to handle the use of inheritance, which will be discussed next. A trait is like an interface in Go or Java. For now, note that the struct <code>Toggle</code> implements the trait <code>Togglable</code> that has the two methods <code>activate</code> and <code>value</code> and they are defined in the <code>impl Tooglable for Toggle { ... }</code> block.</p>
+<h3 id="using-a-trait-in-place-for-inheritance"><a class="header" href="#using-a-trait-in-place-for-inheritance">Using a trait in place for inheritance.</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">class NthToggle : public Toggle {
+public:
+    NthToggle(bool start_state, int max_counter) :
+        Toggle(start_state), count_max(max_counter), counter(0) {
+    }
+    Toggle&amp; activate() {
+        if (++this-&gt;counter &gt;= this-&gt;count_max) {
+            state = !state;
+            counter = 0;
+        }
+        return(*this);
+    }
+private:
+    int count_max;
+    int counter;
+};
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct NthToggle {
+    state: bool,
+    count_max: i32,
+    counter: i32,
+}
+
+impl NthToggle {
+    fn new(start_state: bool, max_counter: i32) -&gt; NthToggle {
+        NthToggle {
+            state: start_state,
+            count_max: max_counter,
+            counter: 0,
+        }
+    }
+}
+
+impl Togglable for NthToggle {
+    fn activate(&amp;mut self) {
+        self.counter += 1;
+        if self.counter &gt;= self.count_max {
+            self.state = !self.state;
+            self.counter = 0;
+        }
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Rust is not an object oriented programming lanuage. In the C++ version, the class <code>NthToggle</code> inherits from the class <code>Toggle</code>. Because Rust doesn't support inheritance, we instead use a trait, which is like interfaces in Go or Java. The <code>activate</code> and <code>value</code> methods, which are inherited or overridden, are put into a trait <code>Togglable</code>, as opposed to directly in the <code>impl Toggle { ... }</code> block. The struct <code>NthToggle</code> has three variables, instead of one for <code>Toogle</code> and it also implements the trait <code>Togglable</code>. The <code>impl Togglable for NthToggle { ... }</code> block implements the two methods for <code>NthToggle</code>. That way, the two methods can be separately implemented for <code>Toggle</code> and <code>NthToggle</code> and can be polymorphically called like C++ virtual calls. A caveat is that the <code>state</code> variable and the <code>value</code> method need to be duplicated.</p>
+<h3 id="avoding-unnecessarily-returning-a-reference"><a class="header" href="#avoding-unnecessarily-returning-a-reference">Avoding unnecessarily returning a reference</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">        val = toggle-&gt;activate().value();
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        toggle.activate();
+        val = toggle.value();
+<span class="boring">}</span></code></pre></pre>
+<p>I chose to change the <code>activate</code> method not to return a reference to the instance. I believe that we would want to avoid returning a reference in Rust as it might require lifetime annotations to be used and lead to unnecessary complexity. In this example, we could simply call the <code>value</code> method to get the state value in the second line.</p>
+<h2 id="performance-analysis"><a class="header" href="#performance-analysis">Performance analysis</a></h2>
+<p><a href="../benchmarking-results.html">The benchmark results</a> show that the Rust version is about 8 times faster than the C++ version.</p>
+<p>We will compare the generated code between C++ and Rust.</p>
+<h3 id="c"><a class="header" href="#c">C++</a></h3>
+<p>C++ perfdata (the hot function list)</p>
+<pre><code>Overhead  Command   Shared Object        Symbol
+  78.05%  methcall  methcall             [.] main
+  12.20%  methcall  methcall             [.] NthToggle::activate()
+   9.65%  methcall  methcall             [.] Toggle::activate()
+</code></pre>
+<p>C++ perfdata (the main function)</p>
+<pre><code>  4.86 │ 50:   mov    (%r14),%rax
+  4.73 │       mov    %r14,%rdi
+ 40.76 │     → call   *0x10(%rax)
+  2.60 │       dec    %ebp
+  4.86 │     ↑ jne    50
+</code></pre>
+<p>C++ perfdata (<code>Toggle::activate()</code>)</p>
+<pre><code> 21.28 │     mov  %rdi,%rax
+ 39.85 │     xorb $0x1,0x8(%rdi)
+ 38.87 │   ← ret
+</code></pre>
+<p>C++ perfdata (<code>NthToggle::activate()</code>)</p>
+<pre><code> 10.18 │      mov  %rdi,%rax
+  9.78 │      mov  0x10(%rdi),%ecx
+ 10.25 │      inc  %ecx
+ 21.22 │      mov  %ecx,0x10(%rdi)
+  9.13 │      cmp  0xc(%rdi),%ecx
+       │    ↓ jl   1b
+  3.94 │      xorb $0x1,0x8(%rax)
+  7.03 │      movl $0x0,0x10(%rax)
+ 28.45 │1b: ← ret
+</code></pre>
+<p>It looks like the <code>activate</code> call isn't devirtualized or inlined.</p>
+<h3 id="rust"><a class="header" href="#rust">Rust</a></h3>
+<p>Rust perfdata (the host function list)</p>
+<pre><code>Overhead  Command   Shared Object     Symbol
+  99.92%  methcall  methcall          [.] methcall::main
+</code></pre>
+<p>Rust perfdata (the host loop in the main function)</p>
+<pre><code>  2.52 │280:   xor    %dil,%cl
+  4.92 │       xor    %r8b,%cl
+  4.50 │       xor    %r9b,%cl
+  2.40 │       xor    %r11b,%cl
+  3.75 │       add    $0xfffffffc,%ebx
+  3.51 │     ↑ je     23a
+  4.33 │291:   lea    0x1(%rdx),%r8d
+  6.20 │       cmp    $0x2,%edx
+  3.23 │       setge  %dil
+  7.95 │       cmovge %esi,%r8d
+  3.92 │       lea    0x1(%r8),%edx
+  2.63 │       cmp    $0x2,%r8d
+  9.47 │       cmovge %esi,%edx
+  4.91 │       setge  %r8b
+  2.28 │       mov    $0x0,%r10d
+  3.27 │       cmp    $0x2,%edx
+  2.52 │       setge  %r9b
+  3.39 │     ↓ jge    2c3
+  2.75 │       inc    %edx
+  1.99 │       mov    %edx,%r10d
+  3.63 │2c3:   mov    $0x0,%edx
+  2.92 │       cmp    $0x2,%r10d
+  2.92 │       setge  %r11b
+  3.80 │     ↑ jge    280
+  1.93 │       inc    %r10d
+  2.83 │       mov    %r10d,%edx
+  1.52 │     ↑ jmp    280
+</code></pre>
+<p>We can see that the <code>activate</code> call is devirtualized, inlined and the loop is unrolled by a factor of 4. This explains the performance difference.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../programs/matrix.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../programs/moments.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../programs/matrix.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../programs/moments.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

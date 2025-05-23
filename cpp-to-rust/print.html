@@ -1,0 +1,3544 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>C++ to Rust</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">C++ to Rust</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>This repository contains a set of relatively small Rust programs that
+I ported from C++ to learn Rust.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="programs"><a class="header" href="#programs">Programs</a></h1>
+<p>The C++ programs ported are the non-iteractive programs from <a href="https://github.com/llvm/llvm-test-suite/tree/main/SingleSource/Benchmarks/Shootout-C%2B%2B">the LLVM
+Test Suite Shootout
+C++</a>
+which originates in <a href="http://www.bagley.org/~doug/shootout/">the Programming Language
+Shootout</a>:</p>
+<ul>
+<li><a href="programs/./ackermann.html">ackermann</a></li>
+<li><a href="programs/./ary.html">ary</a></li>
+<li><a href="programs/./ary2.html">ary2</a></li>
+<li><a href="programs/./ary3.html">ary3</a></li>
+<li><a href="programs/./fibo.html">fibo</a></li>
+<li><a href="programs/./hash.html">hash</a></li>
+<li><a href="programs/./hash2.html">hash2</a></li>
+<li><a href="programs/./heapsort.html">heapsort</a></li>
+<li><a href="programs/./lists.html">lists</a></li>
+<li><a href="programs/./lists1.html">lists1</a></li>
+<li><a href="programs/./matrix.html">matrix</a></li>
+<li><a href="programs/./methcall.html">methcall</a></li>
+<li><a href="programs/./moments.html">moments</a></li>
+<li><a href="programs/./nestedloop.html">nestedloop</a></li>
+<li><a href="programs/./objinst.html">objinst</a></li>
+<li><a href="programs/./random.html">random</a></li>
+<li><a href="programs/./sieve.html">sieve</a></li>
+<li><a href="programs/./strcat.html">strcat</a></li>
+</ul>
+<p>The current criteria for programs I picked are:</p>
+<ul>
+<li>they are small</li>
+<li>they produce some output so that the correctness of porting can be checked</li>
+<li>they are deterministic and can be run without any interactive user input from a beginning to an end</li>
+<li>their execution times indicate their run time performance</li>
+</ul>
+<p>I'd like to add more programs in the future.</p>
+<h1 id="porting-notes"><a class="header" href="#porting-notes">Porting notes</a></h1>
+<p>When porting from C++ to Rust, I stick with the idiomatic style,
+including the use of the standard library types, as much as
+appropriate. For example, I'd use Rust's <code>String</code> type where C++
+<code>std::string</code> (or a C <code>char*</code> string) is used. Similarly, I'd use
+Rust's <code>Vec</code> type in place for C++ <code>std::vector</code> and C/C++ raw array
+types.</p>
+<p>I wrote down porting notes for each program.</p>
+<h1 id="benchmark-results-and-performance-analysis"><a class="header" href="#benchmark-results-and-performance-analysis">Benchmark results and performance analysis</a></h1>
+<p>I included <a href="programs/../benchmarking-results.html">benchmark results</a> between the
+C++ and the Rust versions. I also included performance analysis based
+on the generated code for the programs whose benchmark results were
+significantly different,</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ackermann"><a class="header" href="#ackermann">ackermann</a></h1>
+<h2 id="full-source-code"><a class="header" href="#full-source-code">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;
+
+using namespace std;
+
+int Ack(int M, int N) { return(M ? (Ack(M-1,N ? Ack(M,(N-1)) : 1)) : N+1); }
+
+int main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 11
+#else
+#define LENGTH 12
+#endif
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+
+    cout &lt;&lt; "Ack(3," &lt;&lt; n &lt;&lt; "): " &lt;&lt; Ack(3, n) &lt;&lt; endl;
+    return(0);
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 11;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 12;
+
+fn ack(m: i32, n: i32) -&gt; i32 {
+    if m != 0 { ack(m - 1, if n != 0 { ack(m, n - 1) } else { 1 }) } else { n + 1 }
+}
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+    println!("Ack(3,{}): {}", n, ack(3, n));
+}</code></pre></pre>
+<h2 id="porting-notes-1"><a class="header" href="#porting-notes-1">Porting notes</a></h2>
+<h3 id="conditionally-declaring-constants"><a class="header" href="#conditionally-declaring-constants">Conditionally declaring constants</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 11
+#else
+#define LENGTH 12
+#endif
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 11;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 12;
+<span class="boring">}</span></code></pre></pre>
+<p>It's idiomatic to use <code>const</code> variables along with the <code>cfg</code> attributes to conditionally declare constants, as opposed to using macros in C/C++.</p>
+<h3 id="declaring-a-function"><a class="header" href="#declaring-a-function">Declaring a function</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">int Ack(int M, int N) { return(M ? (Ack(M-1,N ? Ack(M,(N-1)) : 1)) : N+1); }
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn ack(m: i32, n: i32) -&gt; i32 {
+    if m != 0 { ack(m - 1, if n != 0 { ack(m, n - 1) } else { 1 }) } else { n + 1 }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Declaring a function in Rust is not too dissimilar to C++ with some differences:</p>
+<ul>
+<li>Functions are declared with the <code>fn</code> keyword.</li>
+<li>The parameter type comes after the parameter name and a colon.</li>
+<li>The return type comes after the parameter list and the <code>-&gt;</code>.</li>
+<li>The if statement condition expression doesn't need parentheses around them.</li>
+<li>Rust has if expressions in addition to if statements (or the last statement in the blocks can be an expression), and lacks the ternary operator.</li>
+<li>Rust has no <code>int</code> type and uses integer types with explicit widths such as <code>i32</code>.</li>
+</ul>
+<h3 id="accessing-program-arguments"><a class="header" href="#accessing-program-arguments">Accessing program arguments</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">int main(int argc, char *argv[]) {
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    ...
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+    ...</code></pre></pre>
+<p>Rust's main function doesn't have the <code>argc</code> and <code>argv</code> parameters. Instead the program arguments are accessed with the <code>std::env</code> API.</p>
+<p>The <code>std::option</code> type is commonly used in Rust to represent the optional result of an operation. The <code>unwrap</code> function is used to access the result when it is assumed that it contains a valid result, which would cause a panic if it does not. For example, accessing the <code>n</code>th element of an argument array and parsing a string into an integer.</p>
+<p>This common pattern on the program arguments are used in most of the programs here. I believe it achieves dual purposes, to allow the problem size changed and to makes it harder for the compiler to compile-time evaluate (constant-fold) the entire program logic.</p>
+<h3 id="printing-to-standard-output"><a class="header" href="#printing-to-standard-output">Printing to standard output</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    cout &lt;&lt; "Ack(3," &lt;&lt; n &lt;&lt; "): " &lt;&lt; Ack(3, n) &lt;&lt; endl;
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    println!("Ack(3,{}): {}", n, ack(3, n));
+<span class="boring">}</span></code></pre></pre>
+<p><code>println!</code> is the standard way to print to standard output in Rust. The <code>!</code> at the end indicates it's a macro. I won't go into macros here.</p>
+<p>To print without the new line, we'd use <code>print!</code> instead.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ary"><a class="header" href="#ary">ary</a></h1>
+<h2 id="full-source-code-1"><a class="header" href="#full-source-code-1">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int
+main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 900000
+#else
+#define LENGTH 9000000
+#endif
+    int i, n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    typedef std::vector&lt;int&gt; ARY;
+    ARY x(n);
+    ARY y(n);
+
+    for (i=0; i&lt;n; i++) {
+        x[i] = i;
+    }
+    for (int i = n - 1; i &gt;= 0; --i) {
+        y[i] = x[i];
+    }
+
+    std::cout &lt;&lt; y.back() &lt;&lt; std::endl;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 900000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 9000000;
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut x = Vec::&lt;i32&gt;::new();
+    x.resize(n as usize, 0);
+    let mut y = Vec::&lt;i32&gt;::new();
+    y.resize(n as usize, 0);
+
+    for i in 0..n {
+        x[i as usize] = i;
+    }
+    for i in (0..n).rev() {
+        y[i as usize] = x[i as usize];
+    }
+
+    println!("{}", y[(n - 1) as usize]);
+}</code></pre></pre>
+<h2 id="porting-notes-2"><a class="header" href="#porting-notes-2">Porting notes</a></h2>
+<h3 id="initializing-vectors-of-type-i32-and-of-size-n-as-local-mutable-variables"><a class="header" href="#initializing-vectors-of-type-i32-and-of-size-n-as-local-mutable-variables">Initializing vectors of type <code>i32</code> and of size <code>n</code> as local, mutable variables</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    typedef std::vector&lt;int&gt; ARY;
+    ARY x(n);
+    ARY y(n);
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    let mut x = Vec::&lt;i32&gt;::new();
+    x.resize(n as usize, 0);
+    let mut y = Vec::&lt;i32&gt;::new();
+    y.resize(n as usize, 0);
+<span class="boring">}</span></code></pre></pre>
+<p>We initialize the two vectors, <code>x</code> and <code>y</code> using <code>let mut</code>. <code>let</code> is the standard way to declare a local variable and <code>mut</code> is added because we will modify (mutate) the vector later.</p>
+<p>When initializing a <code>Vec</code> of element type <code>i32</code>, we put the element type <code>i32</code> in angly brackets as in <code>Vec::&lt;i32&gt;</code>, as opposed to the C++ style <code>Vec&lt;i32&gt;</code>.</p>
+<p>As there isn't currently a way to initialize a <code>Vec</code> with a given size <code>n</code> in one shot in Rust, we initialize a v<code>Vec</code> of size zero and then resize to <code>n</code> with default element value <code>0</code>.</p>
+<p>The vector indices in Rust are of type <code>usize</code> like <code>size_t</code> and there are no implicit integer conversions, we need to cast <code>n</code> (of type <code>i32</code>) to <code>usize</code> using the <code>as</code> keyword as in <code>n as usize</code>.</p>
+<h3 id="writing-for-range-loops"><a class="header" href="#writing-for-range-loops">Writing <code>for</code> range loops</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    for (i=0; i&lt;n; i++) {
+        x[i] = i;
+    }
+    for (int i = n - 1; i &gt;= 0; --i) {
+        y[i] = x[i];
+    }
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    for i in 0..n {
+        x[i as usize] = i;
+    }
+    for i in (0..n).rev() {
+        y[i as usize] = x[i as usize];
+    }
+<span class="boring">}</span></code></pre></pre>
+<p>A <code>for</code> range loop is written as <code>for i in 0..n { ... }</code>. The loop iterates with the index range <code>0</code> up to <code>n - 1</code> induction variable where <code>n</code> is exclusive. There are no parentheses around the for loop header like the if statement condition expression. It's equivalent to <code>for (int i = 0; i &lt; n; ++i) { ... }</code> in C++.</p>
+<p>There is no general <code>for</code> loop in Rust where the loop variable declaration, the loop termination condition and the loop increment statements are spelled out and can be customizable. We would use <code>while</code> loops instead.</p>
+<p>To make <code>n</code> to be inclusive, we would write <code>for i in 0..&lt;=n { ... }</code>.</p>
+<p>A <code>for</code> range loop in the reverse order is written as <code>for i in (0..n).rev() { ... }</code>. This is equivalent to <code>for (int i = n - 1; i &gt;= 0; --i) { ... }</code> in C++.</p>
+<p>Since the variable <code>i</code> is of type <code>i32</code>, we convert it to <code>usize</code>, as in <code>i as usize</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ary2"><a class="header" href="#ary2">ary2</a></h1>
+<h2 id="full-source-code-2"><a class="header" href="#full-source-code-2">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int
+main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 90000
+#else
+#define LENGTH 900000
+#endif
+    int i, n = 10*((argc == 2) ? atoi(argv[1]) : LENGTH);
+    typedef std::vector&lt;int&gt; ARY;
+    ARY x(n);
+    ARY y(n);
+
+    for (i=0; i&lt;n;) {
+        x[i] = i; ++i;
+        x[i] = i; ++i;
+        x[i] = i; ++i;
+        x[i] = i; ++i;
+        x[i] = i; ++i;
+
+        x[i] = i; ++i;
+        x[i] = i; ++i;
+        x[i] = i; ++i;
+        x[i] = i; ++i;
+        x[i] = i; ++i;
+    }
+    for (int i = n - 1; i &gt;= 0;) {
+        y[i] = x[i]; --i;
+        y[i] = x[i]; --i;
+        y[i] = x[i]; --i;
+        y[i] = x[i]; --i;
+        y[i] = x[i]; --i;
+
+        y[i] = x[i]; --i;
+        y[i] = x[i]; --i;
+        y[i] = x[i]; --i;
+        y[i] = x[i]; --i;
+        y[i] = x[i]; --i;
+    }
+
+    std::cout &lt;&lt; y.back() &lt;&lt; std::endl;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 90000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 900000;
+
+fn main() {
+    let mut args = env::args();
+    let n = 10 * if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut x = Vec::&lt;i32&gt;::new();
+    x.resize(n as usize, 0);
+    let mut y = Vec::&lt;i32&gt;::new();
+    y.resize(n as usize, 0);
+
+    let mut i: i32 = 0;
+    while i &lt; n {
+        x[i as usize] = i; i += 1;
+        x[i as usize] = i; i += 1;
+        x[i as usize] = i; i += 1;
+        x[i as usize] = i; i += 1;
+        x[i as usize] = i; i += 1;
+
+        x[i as usize] = i; i += 1;
+        x[i as usize] = i; i += 1;
+        x[i as usize] = i; i += 1;
+        x[i as usize] = i; i += 1;
+        x[i as usize] = i; i += 1;
+    }
+
+    i = n - 1;
+    while i &gt;= 0 {
+        y[i as usize] = x[i as usize]; i -= 1;
+        y[i as usize] = x[i as usize]; i -= 1;
+        y[i as usize] = x[i as usize]; i -= 1;
+        y[i as usize] = x[i as usize]; i -= 1;
+        y[i as usize] = x[i as usize]; i -= 1;
+
+        y[i as usize] = x[i as usize]; i -= 1;
+        y[i as usize] = x[i as usize]; i -= 1;
+        y[i as usize] = x[i as usize]; i -= 1;
+        y[i as usize] = x[i as usize]; i -= 1;
+        y[i as usize] = x[i as usize]; i -= 1;
+    }
+
+    println!("{}", y.iter().last().unwrap());
+}
+</code></pre></pre>
+<h2 id="porting-notes-3"><a class="header" href="#porting-notes-3">Porting notes</a></h2>
+<h3 id="using-while-loops-instead-of-general-for-loops"><a class="header" href="#using-while-loops-instead-of-general-for-loops">Using <code>while</code> loops instead of general <code>for</code> loops</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    int i, ...
+    for (i=0; i&lt;n;) {
+      ...
+    }
+    for (int i = n - 1; i &gt;= 0;) {
+      ...
+    }
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    let mut i: i32 = 0;
+    while i &lt; n {
+      ...
+    }
+    i = n - 1;
+    while i &gt;= 0 {
+      ...
+    }
+<span class="boring">}</span></code></pre></pre>
+<p>Since Rust has no general for loops, we use <code>while</code> loops instead.</p>
+<p>We declare the loop variable <code>i</code> outside the loop. If we want to explicitly write the type of a local variable, we put the type after the variable name and the <code>:</code> but before the initializer, as in <code>let mut i: i32 = 0;</code>. The type are often omitted relying on type inference.</p>
+<h3 id="incrementing-or-decrementing-a-variable"><a class="header" href="#incrementing-or-decrementing-a-variable">Incrementing or decrementing a variable</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">        x[i] = i; ++i;
+        ...
+        y[i] = x[i]; --i;
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        x[i as usize] = i; i += 1;
+        ...
+        y[i as usize] = x[i as usize]; i -= 1;
+<span class="boring">}</span></code></pre></pre>
+<p>Rust doesn't have the prefix or postfix increment and decrement operators. I think it's to avoid bugs caused by the prefix/postfix evaluation orders. We use the compound assignment operators <code>+=</code> and <code>-=</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ary3"><a class="header" href="#ary3">ary3</a></h1>
+<h2 id="full-source-code-3"><a class="header" href="#full-source-code-3">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 150000
+#else
+#define LENGTH 1500000
+#endif
+    int i, k, n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    typedef vector&lt;int&gt; ARY;
+    ARY x(n);
+    ARY y(n);
+
+    for (i=0; i&lt;n; i++) {
+        x[i] = i + 1;
+    }
+    for (k=0; k&lt;1000; k++) {
+        for (int i = n - 1; i &gt;= 0; --i) {
+            y[i] += x[i];
+        }
+    }
+
+    cout &lt;&lt; y[0] &lt;&lt; " " &lt;&lt; y.back() &lt;&lt; endl;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 150000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 1500000;
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut x = Vec::&lt;i32&gt;::new();
+    x.resize(n as usize, 0);
+    let mut y = Vec::&lt;i32&gt;::new();
+    y.resize(n as usize, 0);
+
+    for i in 0..n {
+        x[i as usize] = i + 1;
+    }
+
+    for _k in 0..1000 {
+        for i in (0..n).rev() {
+            y[i as usize] += x[i as usize];
+        }
+    }
+
+    println!("{} {}", y[0], y.iter().last().unwrap());
+}</code></pre></pre>
+<h2 id="porting-notes-4"><a class="header" href="#porting-notes-4">Porting notes</a></h2>
+<h3 id="a-nested-loop-and-an-unused-loop-index-variable"><a class="header" href="#a-nested-loop-and-an-unused-loop-index-variable">A nested loop and an unused loop index variable</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    for (k=0; k&lt;1000; k++) {
+	for (int i = n - 1; i &gt;= 0; --i) {
+	    y[i] += x[i];
+	}
+    }
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    for _k in 0..1000 {
+        for i in (0..n).rev() {
+            y[i as usize] += x[i as usize];
+        }
+    }
+<span class="boring">}</span></code></pre></pre>
+<p>A nested loop is written in a way similar to C++.</p>
+<p>The Rust compiler emits a warning for an unused loop variable, as in <code>_k</code>, to suggest adding the preceding underscore in its name though it doesn't cause an error.</p>
+<h2 id="performance-analysis"><a class="header" href="#performance-analysis">Performance analysis</a></h2>
+<p><a href="programs/../benchmarking-results.html">The benchmark results</a> show that the Rust version is more than 4 times slower than the C++ version.</p>
+<p>We compare the generated code between C++ and Rust.</p>
+<h3 id="c"><a class="header" href="#c">C++</a></h3>
+<p>Here is the hot loop according to the Linux Perf:</p>
+<p>C++ perf data</p>
+<pre><code>  7.51 │1c0:   movdqu  -0x10(%rsi,%r10,4),%xmm0
+  7.65 │       movdqu  (%rsi,%r10,4),%xmm1
+ 14.29 │       movdqu  -0x10(%rdi,%r10,4),%xmm2
+  7.07 │       paddd   %xmm0,%xmm2
+  8.11 │       movdqu  (%rdi,%r10,4),%xmm0
+  9.28 │       paddd   %xmm1,%xmm0
+  8.99 │       movdqu  %xmm0,(%rdi,%r10,4)
+ 18.54 │       movdqu  %xmm2,-0x10(%rdi,%r10,4)
+  9.43 │       add     $0xfffffffffffffff8,%r10
+  8.98 │       cmp     %r10,%r8
+       │     ↑ jne     1c0
+</code></pre>
+<p>This corresponds to the nested loop in the second loop in the source code.</p>
+<p>C++ LLVM IR (the frontend output)</p>
+<pre><code>77:                                               ; preds = %76, %77
+  %78 = phi i64 [ %93, %77 ], [ 0, %76 ]
+  %79 = xor i64 %78, -1
+  %80 = add i64 %79, %40
+  %81 = getelementptr inbounds nuw i32, ptr %33, i64 %80
+  %82 = getelementptr inbounds i8, ptr %81, i64 -12
+  %83 = getelementptr inbounds i8, ptr %81, i64 -28
+  %84 = load &lt;4 x i32&gt;, ptr %82, align 4, !tbaa !10
+  %85 = load &lt;4 x i32&gt;, ptr %83, align 4, !tbaa !10
+  %86 = getelementptr inbounds nuw i32, ptr %36, i64 %80
+  %87 = getelementptr inbounds i8, ptr %86, i64 -12
+  %88 = getelementptr inbounds i8, ptr %86, i64 -28
+  %89 = load &lt;4 x i32&gt;, ptr %87, align 4, !tbaa !10
+  %90 = load &lt;4 x i32&gt;, ptr %88, align 4, !tbaa !10
+  %91 = add nsw &lt;4 x i32&gt; %89, %84
+  %92 = add nsw &lt;4 x i32&gt; %90, %85
+  store &lt;4 x i32&gt; %91, ptr %87, align 4, !tbaa !10
+  store &lt;4 x i32&gt; %92, ptr %88, align 4, !tbaa !10
+  %93 = add nuw i64 %78, 8
+  %94 = icmp eq i64 %93, %43
+  br i1 %94, label %95, label %77, !llvm.loop !17
+</code></pre>
+<p>C++ LLVM IR (right before the Machine IR generation)</p>
+<pre><code>87:                                               ; preds = %.preheader, %87
+  %lsr.iv = phi i64 [ 0, %.preheader ], [ %lsr.iv.next, %87 ]
+  %88 = shl nsw i64 %lsr.iv, 2
+  %scevgep8 = getelementptr i8, ptr %scevgep5, i64 %88
+  %89 = shl nsw i64 %lsr.iv, 2
+  %scevgep6 = getelementptr i8, ptr %scevgep5, i64 %89
+  %scevgep7 = getelementptr i8, ptr %scevgep6, i64 -16
+  %90 = load &lt;4 x i32&gt;, ptr %scevgep8, align 4, !tbaa !10
+  %91 = load &lt;4 x i32&gt;, ptr %scevgep7, align 4, !tbaa !10
+  %92 = shl nsw i64 %lsr.iv, 2
+  %scevgep4 = getelementptr i8, ptr %scevgep, i64 %92
+  %93 = shl nsw i64 %lsr.iv, 2
+  %scevgep2 = getelementptr i8, ptr %scevgep, i64 %93
+  %scevgep3 = getelementptr i8, ptr %scevgep2, i64 -16
+  %94 = load &lt;4 x i32&gt;, ptr %scevgep4, align 4, !tbaa !10
+  %95 = load &lt;4 x i32&gt;, ptr %scevgep3, align 4, !tbaa !10
+  %96 = add nsw &lt;4 x i32&gt; %94, %90
+  %97 = add nsw &lt;4 x i32&gt; %95, %91
+  store &lt;4 x i32&gt; %96, ptr %scevgep4, align 4, !tbaa !10
+  store &lt;4 x i32&gt; %97, ptr %scevgep3, align 4, !tbaa !10
+  %lsr.iv.next = add nsw i64 %lsr.iv, -8
+  %98 = icmp eq i64 %48, %lsr.iv.next
+  br i1 %98, label %99, label %87, !llvm.loop !17
+</code></pre>
+<h3 id="rust"><a class="header" href="#rust">Rust</a></h3>
+<p>Here is the hot loop according to the Linux Perf:</p>
+<p>Rust perf data</p>
+<pre><code>  8.96 │370:   cmp     %rdi,%r14
+       │     ↓ jbe     587
+  8.81 │       cmp     %rdi,%rbp
+       │     ↓ jbe     581
+  8.59 │       mov     (%rbx,%rdi,4),%r8d
+  8.81 │       add     %r8d,(%r15,%rdi,4)
+ 16.53 │       lea     -0x1(%rdi),%r8
+  8.92 │       inc     %rdi
+  7.97 │       cmp     $0x1,%rdi
+ 15.84 │       mov     %r8,%rdi
+ 15.52 │     ↑ jg      370
+</code></pre>
+<p>This also corresponds to the same nested loop in the second loop in the source code.</p>
+<p>Rust LLVM IR (the frontend output)</p>
+<pre><code>bb16.us:                                          ; preds = %bb44.us, %bb51.us
+  %indvars.iv124 = phi i64 [ %73, %bb44.us ], [ %indvars.iv.next125, %bb51.us ]
+  %indvars.iv.next125 = add nsw i64 %indvars.iv124, -1
+  %_86.us = icmp ugt i64 %46, %indvars.iv.next125
+  br i1 %_86.us, label %bb50.us, label %panic10.invoke
+
+bb50.us:                                          ; preds = %bb16.us
+  %_92.us = icmp ugt i64 %56, %indvars.iv.next125
+  br i1 %_92.us, label %bb51.us, label %panic10.invoke
+
+bb51.us:                                          ; preds = %bb50.us
+  %_33.us = getelementptr inbounds i32, ptr %_24.i.i, i64 %indvars.iv.next125
+  %_32.us = load i32, ptr %_33.us, align 4, !noundef !4
+  %_35.us = getelementptr inbounds i32, ptr %_24.i.i54, i64 %indvars.iv.next125
+  %75 = load i32, ptr %_35.us, align 4, !noundef !4
+  %76 = add i32 %75, %_32.us
+  store i32 %76, ptr %_35.us, align 4
+  %_77.us = icmp sgt i64 %indvars.iv124, 1
+  br i1 %_77.us, label %bb16.us, label %bb15.bb12.loopexit_crit_edge.us
+</code></pre>
+<p>It looks like the difference is caused by a lack of loop vectorization in the Rust version.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="fibo"><a class="header" href="#fibo">fibo</a></h1>
+<h2 id="full-source-code-4"><a class="header" href="#full-source-code-4">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;
+
+using namespace std;
+
+unsigned long fib(unsigned long n) {
+    if (n &lt; 2)
+        return(1);
+    else
+        return(fib(n-2) + fib(n-1));
+}
+
+int main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 40
+#else
+#define LENGTH 43
+#endif
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+
+    cout &lt;&lt; fib(n) &lt;&lt; endl;
+    return(0);
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 40;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 43;
+
+fn fib(n: u64) -&gt; u64 {
+    if n &lt; 2 {
+        return 1;
+    } else {
+        return fib(n - 2) + fib(n - 1);
+    }
+}
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    println!("{}", fib(n as u64));
+}</code></pre></pre>
+<h2 id="porting-notes-5"><a class="header" href="#porting-notes-5">Porting notes</a></h2>
+<p>None.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hash"><a class="header" href="#hash">hash</a></h1>
+<h2 id="full-source-code-5"><a class="header" href="#full-source-code-5">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+#include &lt;ext/hash_map&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+using namespace __gnu_cxx;
+
+struct eqstr {
+    bool operator()(const char* s1, const char* s2) const {
+        return strcmp(s1, s2) == 0;
+    }
+};
+
+int
+main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 50000
+#else
+#define LENGTH 500000
+#endif
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    char buf[16];
+    typedef __gnu_cxx::hash_map&lt;const char*, int, __gnu_cxx::hash&lt;const char*&gt;, eqstr&gt; HM;
+    HM X;
+
+    for (int i=1; i&lt;=n; i++) {
+        sprintf(buf, "%x", i);
+        X[strdup(buf)] = i;
+    }
+
+    int c = 0;
+    for (int i=n; i&gt;0; i--) {
+        sprintf(buf, "%d", i);
+        if (X[strdup(buf)]) c++;
+    }
+
+    cout &lt;&lt; c &lt;&lt; endl;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+use std::collections::HashMap;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 50000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 500000;
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut x = HashMap::&lt;String, i32&gt;::new();
+
+    for i in 1..=n {
+        let s = format!("{:X}", i);
+        x.insert(s, i);
+    }
+
+    let mut c: i32 = 0;
+    for i in (1..=n).rev() {
+        let s = format!("{}", i);
+        if x.contains_key(&amp;s) {
+            c += 1;
+        }
+    }
+
+    println!("{}", c);
+}</code></pre></pre>
+<h2 id="porting-notes-6"><a class="header" href="#porting-notes-6">Porting notes</a></h2>
+<h3 id="using-the-standard-string-and-hash-map-types"><a class="header" href="#using-the-standard-string-and-hash-map-types">Using the standard string and hash map types</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    char buf[16];
+    typedef __gnu_cxx::hash_map&lt;const char*, int, __gnu_cxx::hash&lt;const char*&gt;, eqstr&gt; HM;
+    HM X;
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    let mut x = HashMap::&lt;String, i32&gt;::new();
+<span class="boring">}</span></code></pre></pre>
+<p>The C++ version uses the C string <code>char*</code> and the GNU extension hash map <code>__gnu_cxx::hash_map</code> as opposed to <code>std::string</code> and <code>std::unordered_map</code>. I suspect that this program was originally written before the standard hash map became part of the C++ standard.</p>
+<p>In the Rust version, we use the Rust standard <code>String</code> and <code>std::collections::HashMap</code> rather than more faithfully reproducing C string-like data structures or reimplementing the C++ <code>hash_map</code> in Rust to stick to the idiomatic Rust style.</p>
+<p>There is no need to implement or pass the hash and the equal functions for the string type for the hash map in the Rust version, which would be equivalent to <code>__gnu_cxx::hash&lt;const char*&gt;</code> and <code>eqstr</code>, because they are provided by the standard library. This is also the case in <code>std::unordered_map</code> in C++.</p>
+<h3 id="for-range-loops-with-the-inclusive-range-ends"><a class="header" href="#for-range-loops-with-the-inclusive-range-ends"><code>For</code> range loops with the inclusive range ends</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    for (int i=1; i&lt;=n; i++) {
+        ...
+    }
+    ...
+    for (int i=n; i&gt;0; i--) {
+        ...
+    }
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    for i in 1..=n {
+        ...
+    }
+    ...
+    for i in (1..=n).rev() {
+        ...
+    }
+<span class="boring">}</span></code></pre></pre>
+<p>The <code>for</code> range loop <code>for i in 1..=n { ... }</code> has the range end <code>n</code> inclusive and is equivalent to <code>for (int i=1; i&lt;=n; i++) { ... }</code> in C++.</p>
+<p>Similarly, the reverse ordered range loop <code>for i in (1..=n).rev() { ... }</code> is equivalent to <code>for (int i=n; i&gt;0; i--) { ... }</code> in C++.</p>
+<h3 id="formating-strings"><a class="header" href="#formating-strings">Formating strings</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">        sprintf(buf, "%x", i);
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        let s = format!("{:X}", i);
+<span class="boring">}</span></code></pre></pre>
+<p>A common way to format a string in Rust is to use <code>format!</code> roughly corresponding to <code>sprintf</code> in C++.</p>
+<p>While the C++ version writes into an already allocated buffer, the Rust version allocates a new string. This could significantly affect the performance difference but it will be roughly canceled out by the fact that the C++ version will copy the key when inserting the key into hash map in the next line.</p>
+<h3 id="inserting-into-a-hash-map"><a class="header" href="#inserting-into-a-hash-map">Inserting into a hash map</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">        X[strdup(buf)] = i;
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        x.insert(s, i);
+<span class="boring">}</span></code></pre></pre>
+<p>Rust <code>HashMap</code> has the square bracket operator <code>[]</code> but it will panic if the key already exists, unlike the C++ hash map. So we use <code>insert</code> instead.</p>
+<h3 id="checking-whether-an-hash-map-already-contains-a-key"><a class="header" href="#checking-whether-an-hash-map-already-contains-a-key">Checking whether an hash map already contains a key</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">        if (X[strdup(buf)]) c++;
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        if x.contains_key(&amp;s) {
+            c += 1;
+        }
+<span class="boring">}</span></code></pre></pre>
+<p>There is a subtle difference that the C++ version inserts a new entry with the default value <code>0</code> when the key is not already contained in the hash map, in addition to checking whether the key is already contained, while the Rust version only checks if the key is already contained, again, because Rust <code>HashMap</code>'s <code>[]</code> operator will panic if the key does not already exist in the hash map.</p>
+<p>This difference is absorbed by the fact that value <code>0</code> is not used across the two loops and the two if statements branch the same way.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hash2"><a class="header" href="#hash2">hash2</a></h1>
+<h2 id="full-source-code-6"><a class="header" href="#full-source-code-6">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+#include &lt;ext/hash_map&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+using namespace __gnu_cxx;
+
+struct eqstr {
+    bool operator()(const char* s1, const char* s2) const {
+        return strcmp(s1, s2) == 0;
+    }
+};
+
+int
+main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 200
+#else
+#define LENGTH 2000
+#endif
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    char buf[16];
+    typedef __gnu_cxx::hash_map&lt;const char*, int, __gnu_cxx::hash&lt;const char*&gt;, eqstr&gt; HM;
+    HM hash1, hash2;
+
+    for (int i=0; i&lt;10000; i++) {
+        sprintf(buf, "foo_%d", i);
+        hash1[strdup(buf)] = i;
+    }
+    for (int i=0; i&lt;n; i++) {
+        for (HM::iterator k = hash1.begin(); k != hash1.end(); ++k) {
+            hash2[(*k).first] += hash1[(*k).first];
+        }
+    }
+    cout &lt;&lt; hash1["foo_1"] &lt;&lt; " " &lt;&lt; hash1["foo_9999"] &lt;&lt; " "
+         &lt;&lt; hash2["foo_1"] &lt;&lt; " " &lt;&lt; hash2["foo_9999"] &lt;&lt; endl;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+use std::collections::HashMap;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 200;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 2000;
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut hash1: HashMap&lt;String, i32&gt; = HashMap::new();
+    let mut hash2: HashMap&lt;String, i32&gt; = HashMap::new();
+
+    for i in 0..10000 {
+        let s = format!("foo_{}", i);
+        hash1.insert(s, i);
+    }
+
+    for _i in 0..n {
+        for (key, value) in &amp;hash1 {
+            hash2.entry(key.to_string()).and_modify(|e| { *e += *value }).or_insert(*value);
+        }
+    }
+
+    println!("{} {} {} {}", hash1["foo_1"], hash1["foo_9999"], hash2["foo_1"], hash2["foo_9999"]);
+}</code></pre></pre>
+<h2 id="porting-notes-7"><a class="header" href="#porting-notes-7">Porting notes</a></h2>
+<p>Most of the code structure is similar to <a href="programs/./hash.html">hash</a>.</p>
+<h3 id="iterating-hash-map-entries-and-conditionally-mutating-another-hash-map"><a class="header" href="#iterating-hash-map-entries-and-conditionally-mutating-another-hash-map">Iterating hash map entries and conditionally mutating another hash map</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">	for (HM::iterator k = hash1.begin(); k != hash1.end(); ++k) {
+	    hash2[(*k).first] += hash1[(*k).first];
+	}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        for (key, value) in &amp;hash1 {
+            hash2.entry(key.to_string()).and_modify(|e| { *e += *value }).or_insert(*value);
+        }
+<span class="boring">}</span></code></pre></pre>
+<p>Similar to <a href="programs/./hash.html">hash</a>, because C++ <code>hash_map</code>'s <code>[]</code> operator inserts a new entry if it's used with a new key while Rust <code>HashMap</code>'s <code>[]</code> operator will panic if the key does not already exist in the hash map, we cannot just use Rust <code>HashMap</code>'s <code>[]</code> operator.</p>
+<p>Instead we use the <code>and_modify</code> and the <code>or_insert</code> methods to achieve similar behaviors. <code>and_modify</code> takes a closure <code>|e| { *e += *value }</code>, which will be executed when the key already exists in the hash map, <code>or_insert</code> takes a value for a new entry to be inserted when the key doesn't exist.</p>
+<p>We need to convert the key of type <code>&amp;String</code> to <code>String</code> when passing it to <code>HashMap.entry</code> because it takes the key type <code>String</code>, not a reference to it. Due to the cloning that is not necessary in the C++ version, this could be a potential performance disadvantage, but it doesn't seem to be the case according to the performance results where the Rust version was not slower. I suspect that the Rust compiler can optimize away the cloning.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="heapsort"><a class="header" href="#heapsort">heapsort</a></h1>
+<h2 id="full-source-code-7"><a class="header" href="#full-source-code-7">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;math.h&gt;
+#include &lt;cstdio&gt;
+
+using namespace std;
+
+#define IM 139968
+#define IA   3877
+#define IC  29573
+
+double
+gen_random(double max) {
+    static long last = 42;
+    return( max * (last = (last * IA + IC) % IM) / IM );
+}
+
+void
+heapsort(int n, double *ra) {
+    int i, j;
+    int ir = n;
+    int l = (n &gt;&gt; 1) + 1;
+    double rra;
+
+    for (;;) {
+        if (l &gt; 1) {
+            rra = ra[--l];
+        } else {
+            rra = ra[ir];
+            ra[ir] = ra[1];
+            if (--ir == 1) {
+                ra[1] = rra;
+                return;
+            }
+        }
+        i = l;
+        j = l &lt;&lt; 1;
+        while (j &lt;= ir) {
+            if (j &lt; ir &amp;&amp; ra[j] &lt; ra[j+1]) { ++j; }
+            if (rra &lt; ra[j]) {
+                ra[i] = ra[j];
+                j += (i = j);
+            } else {
+                j = ir + 1;
+            }
+        }
+        ra[i] = rra;
+    }
+}
+
+int
+main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 800000
+#else
+#define LENGTH 8000000
+#endif
+    int N = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    double *ary;
+    int i;
+    
+    /* create an array of N random doubles */
+    ary = (double *)malloc((N+1) * sizeof(double));
+    for (i=1; i&lt;=N; i++) {
+        ary[i] = gen_random(1);
+    }
+
+    heapsort(N, ary);
+
+    printf("%.10f\n", ary[N]);
+    free(ary);
+    return(0);
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: usize = 800000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: usize = 8000000;
+
+const IM: i64 = 139968;
+const IA: i64 = 3877;
+const IC: i64 = 29573;
+
+fn get_random(last_random: &amp;mut i64, max: f64) -&gt; f64 {
+    let new_last = (*last_random * IA + IC) % IM;
+    *last_random = new_last;
+    return max * (new_last as f64) / (IM as f64);
+}
+
+fn heapsort(n: usize, ra: &amp;mut Vec&lt;f64&gt;) {
+    let mut i: usize;
+    let mut j: usize;
+    let mut ir = n;
+    let mut l = (n &gt;&gt; 1) + 1;
+    let mut rra: f64;
+
+    loop {
+        if l &gt; 1 {
+            l -= 1;
+            rra = ra[l];
+        } else {
+            rra = ra[ir];
+            ra[ir] = ra[1];
+            ir -= 1;
+            if ir == 1 {
+                ra[1] = rra;
+                return;
+            }
+        }
+        i = l;
+        j = l &lt;&lt; 1;
+        while j &lt;= ir {
+            if j &lt; ir &amp;&amp; ra[j] &lt; ra[j+1] { j += 1; }
+            if rra &lt; ra[j] {
+                ra[i] = ra[j];
+                i = j;
+                j += i;
+            } else {
+                j = ir + 1;
+            }
+        }
+        ra[i] = rra;
+    }
+}
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;usize&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut last_random: i64 = 42;
+
+    let mut ary = Vec::&lt;f64&gt;::new();
+    ary.resize_with(n + 1, Default::default);
+    for i in 1..=n {
+        ary[i] = get_random(&amp;mut last_random, 1.0);
+    }
+
+    heapsort(n, &amp;mut ary);
+
+    println!("{:.10}", ary[n]);
+}</code></pre></pre>
+<h2 id="porting-notes-8"><a class="header" href="#porting-notes-8">Porting notes</a></h2>
+<h3 id="replacing-a-c-block-scoped-static-variable-with-a-locally-scoped-local-variable"><a class="header" href="#replacing-a-c-block-scoped-static-variable-with-a-locally-scoped-local-variable">Replacing a C++ block-scoped static variable with a locally-scoped local variable</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">inline double gen_random(double max) {
+    static long last = 42;
+    return( max * (last = (last * IA + IC) % IM) / IM );
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">fn gen_random(last_random: &amp;mut i64, max: f64) -&gt; f64 {
+    let new_last = (*last_random * IA + IC) % IM;
+    *last_random = new_last;
+    return max * (new_last as f64) / (IM as f64);
+}
+...
+
+fn main() {
+    ...
+    let mut last_random: i64 = 42;
+
+    for i in 1..=n {
+        ary[i] = get_random(&amp;mut last_random, 1.0);
+    }
+    ...</code></pre></pre>
+<p>Rust doesn't support a <code>static</code> variable nested in a function or block scope.</p>
+<p>Furthermore, Rust doesn't allow a mutable global (<code>static</code>) variable without using a thread-safe mechanism such as a mutex.</p>
+<p>To avoid the mutex overhead, the Rust version uses a locally scoped local variable <code>last_random</code> in the main function and passes its mutable reference to the <code>gen_random</code> function. This is safe because the lifetime of the variable covers the entire uses of the <code>gen_random</code> function.</p>
+<p>I interpret this as Rust discouraging casual uses of global variables and encouraing uses of locally scoped thread-local data for thread safety reasons.</p>
+<h3 id="using-usize-variables-intead-of-int"><a class="header" href="#using-usize-variables-intead-of-int">Using <code>usize</code> variables intead of <code>int</code></a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">void
+heapsort(int n, double *ra) {
+    int i, j;
+    int ir = n;
+    int l = (n &gt;&gt; 1) + 1;
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn heapsort(n: usize, ra: &amp;mut Vec&lt;f64&gt;) {
+    let mut i: usize;
+    let mut j: usize;
+    let mut ir = n;
+    let mut l = (n &gt;&gt; 1) + 1;
+    ...
+}
+
+The Rust version uses the index variables of type `usize` instead of
+`int`. This is more idiomatic because of the more explict distinction
+between `usize` and `int` for vector indices in Rust.
+
+## Writing an infinite loop
+
+C++
+```cpp
+    for (;;) {
+        ...
+    }
+<span class="boring">}</span></code></pre></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    loop {
+        ...
+    }
+}
+
+In Rust, an infinite loop, which unconditionally loops (often with a `break` or `return` in the loop body), is written with the `loop` keyword, which is analogous to `for (;;) { ... }` or `while (true) { ... }` in C++.
+
+## Formatting floating point values to show 10 digits after the decimal point
+
+C++
+```cpp
+    printf("%.10f\n", ary[N]);
+<span class="boring">}</span></code></pre></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    println!("{:.10}", ary[n]);
+<span class="boring">}</span></code></pre></pre>
+<p>Since <code>printf</code> formats a <code>double</code> to show the 6 digits after the decimal point by default, the Rust version uses the format specifier <code>{:.6}</code> to achieve the similar.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lists"><a class="header" href="#lists">lists</a></h1>
+<h2 id="full-source-code-8"><a class="header" href="#full-source-code-8">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+// from Bill Lear
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+#include &lt;numeric&gt;
+
+using namespace std;
+
+#ifdef SMALL_PROBLEM_SIZE
+const size_t SIZE = 1000;
+#else
+const size_t SIZE = 10000;
+#endif
+
+template &lt;class _ForwardIterator, class _Tp&gt;
+void 
+iota(_ForwardIterator __first, _ForwardIterator __last, _Tp __value)
+{
+  while (__first != __last)
+    *__first++ = __value++;
+}
+
+size_t test_lists() {
+    std::list&lt;size_t&gt; li1(SIZE);
+
+    ::iota(li1.begin(), li1.end(), 1);
+
+    std::list&lt;size_t&gt; li2(li1);
+
+    std::list&lt;size_t&gt; li3;
+
+    size_t N = li2.size();
+    while (N--) {
+        li3.push_back(li2.front());
+        li2.pop_front();
+    }
+
+    N = li3.size();
+    while (N--) {
+        li2.push_back(li3.back());
+        li3.pop_back();
+    }
+
+    li1.reverse();
+
+    return (li1.front() == SIZE) &amp;&amp; (li1 == li2) ? li1.size() : 0;
+}
+
+int main(int argc, char* argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 300
+#else
+#define LENGTH 3000
+#endif
+    size_t ITER = (argc == 2 ? (atoi(argv[1]) &lt; 1 ? 1 : atoi(argv[1])): LENGTH);
+
+    size_t result = 0;
+    while (ITER &gt; 0) {
+        result = test_lists();
+        --ITER;
+    }
+
+    std::cout &lt;&lt; result &lt;&lt; std::endl;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+// from Bill Lear
+use std::env;
+use std::collections::LinkedList;
+use std::collections::linked_list::IterMut;
+
+#[cfg(feature = "small_problem_size")]
+const SIZE: usize = 1000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const SIZE: usize = 10000;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 300;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 3000;
+
+fn iota(iter: IterMut&lt;'_, usize&gt;, v: usize) {
+    let mut i = 0;
+    for e in iter {
+        *e = i + v;
+        i += 1;
+    }
+}
+
+fn list_reverse&lt;T&gt;(list: LinkedList&lt;T&gt;) -&gt; LinkedList&lt;T&gt; {
+    let mut reversed = LinkedList::new();
+    for elem in list {
+        reversed.push_front(elem);
+    }
+    return reversed
+}
+
+fn test_lists() -&gt; usize {
+    let mut li1 = LinkedList::&lt;usize&gt;::new();
+    for _i in 0..SIZE {
+        li1.push_back(Default::default());
+    }
+
+    iota(li1.iter_mut(), 1);
+
+    let mut li2 = li1.clone();
+
+    let mut li3 = LinkedList::&lt;usize&gt;::new();
+
+    let mut n = li2.len();
+    while n != 0 {
+        n -= 1;
+        li3.push_back(li2.pop_front().unwrap());
+    }
+
+    n = li3.len();
+    while n != 0 {
+        n -= 1;
+        li2.push_back(li3.pop_back().unwrap());
+    }
+
+    li1 = list_reverse(li1);
+
+    return if *li1.front().unwrap() == SIZE &amp;&amp; li1.eq(&amp;li2) {
+        li1.len()
+    } else {
+        0 as usize
+    };
+}
+
+fn main() {
+    let mut args = env::args();
+    let mut iter = if args.len() == 2 {
+        if args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap() &lt; 1 {
+            1
+        } else {
+            args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+        }
+    } else {
+        LENGTH
+    };
+
+    let mut result: usize = 0;
+    while iter &gt; 0 {
+        result = test_lists();
+        iter -= 1;
+    }
+
+    println!("{}", result);
+}</code></pre></pre>
+<h2 id="porting-notes-9"><a class="header" href="#porting-notes-9">Porting notes</a></h2>
+<h3 id="initializing-a-list-with-incrementing-values-iota"><a class="header" href="#initializing-a-list-with-incrementing-values-iota">Initializing a list with incrementing values (iota)</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">template &lt;class _ForwardIterator, class _Tp&gt;
+void 
+iota(_ForwardIterator __first, _ForwardIterator __last, _Tp __value)
+{
+  while (__first != __last)
+    *__first++ = __value++;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn iota(iter: IterMut&lt;'_, usize&gt;, v: usize) {
+    let mut i = 0;
+    for e in iter {
+        *e = i + v;
+        i += 1;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>I omitted the use of generics in the Rust version because it's used only for one call site.</p>
+<p>In Rust, an iterator is a single entity, an <code>IterMut</code> in this case (an <code>Iter</code> if mutation isn't needed) and the iteration over the iterator uses the <code>for</code> range loop, as opposed to a pair of separate, pointer-like iterators and more free-style iteration over them in C++. I think this helps make the handling of iterators safer in Rust.</p>
+<h3 id="reversing-a-linked-list"><a class="header" href="#reversing-a-linked-list">Reversing a linked list</a></h3>
+<p>C++
+none.</p>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn list_reverse&lt;T&gt;(list: LinkedList&lt;T&gt;) -&gt; LinkedList&lt;T&gt; {
+    let mut reversed = LinkedList::new();
+    for elem in list {
+        reversed.push_front(elem);
+    }
+    return reversed
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Rust's <code>LinkedList</code> interestingly doesn't have a reverse method.</p>
+<p>I implemented a simple reverse function that copies to a new linked list in the reverse order. I'd imagine that this could be slower than a built-in reversemethod that reverses the directions of the internal pointers without copying the nodes, but the benchmark results show the Rust version is no slower.</p>
+<p>The type inference allows the type <code>T</code> to be inferred in the <code>LinkedList::new()</code> call.</p>
+<h3 id="initializinga-linked-list-of-a-given-size-with-the-default-element-value"><a class="header" href="#initializinga-linked-list-of-a-given-size-with-the-default-element-value">Initializinga linked list of a given size with the default element value</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    std::list&lt;size_t&gt; li1(SIZE);
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    let mut li1 = LinkedList::&lt;usize&gt;::new();
+    for _i in 0..SIZE {
+        li1.push_back(Default::default());
+    }
+<span class="boring">}</span></code></pre></pre>
+<p>Similar to <code>Vec</code>, there isn't a way to initialize a <code>LinkedList</code> with a given size, unlike <code>std::list</code> in C++. I used a two-step approach of allocating a zero-sized linked list and then resizing it with the default element value. <code>Default::default()</code> is a convenient way to specify the default value of a certain type without typing the type name.</p>
+<h3 id="copying-a-linked-list"><a class="header" href="#copying-a-linked-list">Copying a linked list</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    std::list&lt;size_t&gt; li2(li1);
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    let mut li2 = li1.clone();
+<span class="boring">}</span></code></pre></pre>
+<p>Rust's <code>LinkedList</code> doesn't provide a way to initialize a linked list as a copy of another. There is no copy constructor as in C++. We use <code>clone()</code> to achieve the same.</p>
+<h3 id="popping-the-front-of-a-linked-list-and-capturing-the-front"><a class="header" href="#popping-the-front-of-a-linked-list-and-capturing-the-front">Popping the front of a linked list and capturing the front</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">        li3.push_back(li2.front());
+        li2.pop_front();
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        li3.push_back(li2.pop_front().unwrap());
+<span class="boring">}</span></code></pre></pre>
+<p>Rust's <code>pop_front()</code> returns an <code>std::optional</code> value in addition to removing the front element from the linked list and achieves what both <code>front()</code> and <code>pop_front()</code> need to be used to achieve the same in C++.</p>
+<h3 id="an-if-expression"><a class="header" href="#an-if-expression">An <code>if</code> expression</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    return (li1.front() == SIZE) &amp;&amp; (li1 == li2) ? li1.size() : 0;
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    return if *li1.front().unwrap() == SIZE &amp;&amp; li1.eq(&amp;li2) {
+        li1.len()
+    } else {
+        0 as usize
+    };
+<span class="boring">}</span></code></pre></pre>
+<p>To peek the value of the front element of a linked list, we get a <code>std::optional</code> by calling <code>front()</code>, takes the reference by calling <code>unwrap</code> on the <code>std::optional</code> and dereference it. This would normally force programmars to think about the case where the linked list is empty but here we bypass that for simplicity by asserting otherwise.</p>
+<p>The <code>==</code> operator in C++ would compare the two linked lists as a whole. For that, we use the <code>eq</code> method in Rust.</p>
+<p>We use the <code>if</code> statement instead of a ternary operator which doesn't exist in Rust.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lists1"><a class="header" href="#lists1">lists1</a></h1>
+<h2 id="full-source-code-9"><a class="header" href="#full-source-code-9">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;algorithm&gt;
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+#include &lt;numeric&gt;
+
+template &lt;class _ForwardIterator, class _Tp&gt;
+void 
+iota(_ForwardIterator __first, _ForwardIterator __last, _Tp __value)
+{
+  while (__first != __last)
+    *__first++ = __value++;
+}
+
+using namespace std;
+
+void list_print_n (list&lt;int&gt; L, int n) {
+    int c, lastc = n - 1;
+    list&lt;int&gt;::iterator i;
+    for (c = 0, i = L.begin(); i != L.end() &amp;&amp; c &lt; n; ++i, ++c) {
+        cout &lt;&lt; (*i);
+        if (c &lt; lastc) cout &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+}
+
+int main(int argc, char* argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 100000
+#else
+#define LENGTH 1000000
+#endif
+    int N = (argc == 2 ? (atoi(argv[1]) &lt; 1 ? 1 : atoi(argv[1])): LENGTH);
+    list&lt;int&gt;::iterator i;
+
+    // create empty list B
+    list&lt;int&gt; B;
+
+    // create list (A) of integers from 1 through N
+    list&lt;int&gt; A(N);
+    ::iota(A.begin(), A.end(), 1);
+
+    // move each individual item from A to B, in a loop, reversing order
+    while (! A.empty()) {
+        B.push_front(A.front());
+        A.pop_front();
+    }
+    
+    // print first 2 elements of B
+    list_print_n(B, 2);
+
+    // reverse B (can be done in place)
+    B.reverse();
+    // reverse(B.begin(), B.end());
+
+    // is 0 a member of B?
+    cout &lt;&lt; ((find(B.begin(), B.end(), 0) == B.end()) ? "false" : "true") &lt;&lt; endl;
+
+    // is N a member of B?
+    cout &lt;&lt; ((find(B.begin(), B.end(), N) == B.end()) ? "false" : "true") &lt;&lt; endl;
+
+    // filter values from B to A that are less than N/2, preserving order
+    int mid = N/2;
+    for (i = B.begin(); i != B.end(); ++i) {
+        if ((*i) &lt; mid) A.push_back(*i);
+    }
+
+    // print first ten items of A
+    list_print_n(A, 10);
+
+    // print sum of items in A that are less than 1000
+    int sum = 0;
+    for (i = A.begin(); i != A.end(); ++i) {
+        if ((*i) &lt; 1000) sum += (*i);
+    }
+    cout &lt;&lt; sum &lt;&lt; endl;
+
+    // append B to end of A
+    A.splice(A.end(), B);
+
+    // print length and last element of A
+    cout &lt;&lt; A.size() &lt;&lt; " " &lt;&lt; A.back() &lt;&lt; endl;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+use std::collections::LinkedList;
+use std::collections::linked_list::IterMut;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 100000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 1000000;
+
+fn iota(iter: IterMut&lt;'_, i32&gt;, v: i32) {
+    let mut i = 0;
+    for e in iter {
+        *e = i + v;
+        i += 1;
+    }
+}
+
+fn list_print_n(list: &amp;LinkedList&lt;i32&gt;, n: i32) {
+    let lastc = n - 1;
+    let mut c = 0;
+    for elem in list.iter() {
+        if c &gt;= n {
+            break;
+        }
+        print!("{}", elem);
+        if c &lt; lastc {
+            print!(" ");
+        }
+        c += 1;
+    }
+    println!();
+}
+
+fn list_reverse&lt;T&gt;(list: LinkedList&lt;T&gt;) -&gt; LinkedList&lt;T&gt; {
+    let mut reversed = LinkedList::new();
+    for elem in list {
+        reversed.push_front(elem);
+    }
+    return reversed
+}
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        if args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap() &lt; 1 {
+            1
+        } else {
+            args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+        }
+    } else {
+        LENGTH
+    };
+
+    let mut b = LinkedList::&lt;i32&gt;::new();
+
+    let mut a = LinkedList::&lt;i32&gt;::new();
+    for _i in 0..n {
+        a.push_back(Default::default());
+    }
+    iota(a.iter_mut(), 1);
+
+    while a.len() &gt; 0 {
+        b.push_front(a.pop_front().unwrap());
+    }
+
+    list_print_n(&amp;b, 2);
+
+    b = list_reverse(b);
+
+    println!("{}", if !b.contains(&amp;0) { "false" } else { "true" });
+
+    println!("{}", if !b.contains(&amp;n) { "false" } else { "true" });
+
+    let mid = n / 2;
+    for elem in b.iter() {
+        if *elem &lt; mid {
+            a.push_back(*elem);
+        }
+    }
+
+    list_print_n(&amp;a, 10);
+
+    let mut sum = 0;
+    for elem in b.iter() {
+        if *elem &lt; 1000 {
+            sum += *elem;
+        }
+    }
+    println!("{}", sum);
+
+    a.append(&amp;mut b);
+
+    println!("{} {}", a.len(), *a.back().unwrap());
+}</code></pre></pre>
+<h2 id="porting-notes-10"><a class="header" href="#porting-notes-10">Porting notes</a></h2>
+<p>Many parts are shared with <a href="programs/./lists.html">lists</a> with some differences.</p>
+<p>There are no particular notes.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="matrix"><a class="header" href="#matrix">matrix</a></h1>
+<h2 id="full-source-code-10"><a class="header" href="#full-source-code-10">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;
+
+using namespace std;
+
+#define SIZE 30
+
+int **mkmatrix(int rows, int cols) {
+    int i, j, count = 1;
+    int **m = (int **) malloc(rows * sizeof(int *));
+    for (i=0; i&lt;rows; i++) {
+        m[i] = (int *) malloc(cols * sizeof(int));
+        for (j=0; j&lt;cols; j++) {
+            m[i][j] = count++;
+        }
+    }
+    return(m);
+}
+
+void zeromatrix(int rows, int cols, int **m) {
+    int i, j;
+    for (i=0; i&lt;rows; i++)
+        for (j=0; j&lt;cols; j++)
+            m[i][j] = 0;
+}
+
+void freematrix(int rows, int **m) {
+    while (--rows &gt; -1) { free(m[rows]); }
+    free(m);
+}
+
+int **mmult(int rows, int cols, int **m1, int **m2, int **m3) {
+    int i, j, k, val;
+    for (i=0; i&lt;rows; i++) {
+        for (j=0; j&lt;cols; j++) {
+            val = 0;
+            for (k=0; k&lt;cols; k++) {
+                val += m1[i][k] * m2[k][j];
+            }
+            m3[i][j] = val;
+        }
+    }
+    return(m3);
+}
+
+int main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 10000
+#else
+#define LENGTH 100000
+#endif
+    int i, n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+
+    int **m1 = mkmatrix(SIZE, SIZE);
+    int **m2 = mkmatrix(SIZE, SIZE);
+    int **mm = mkmatrix(SIZE, SIZE);
+
+    for (i=0; i&lt;n; i++) {
+        mm = mmult(SIZE, SIZE, m1, m2, mm);
+    }
+    cout &lt;&lt; mm[0][0] &lt;&lt; " " &lt;&lt; mm[2][3] &lt;&lt; " " &lt;&lt; mm[3][2] &lt;&lt; " " &lt;&lt; mm[4][4] &lt;&lt; endl;
+
+    freematrix(SIZE, m1);
+    freematrix(SIZE, m2);
+    freematrix(SIZE, mm);
+    return(0);
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+const SIZE: usize = 30;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 10000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 100000;
+
+fn mkmatrix(rows: usize, cols: usize) -&gt; Vec::&lt;Vec::&lt;i32&gt;&gt; {
+    let mut count = 1;
+    let mut m = Vec::&lt;Vec::&lt;i32&gt;&gt;::new();
+    m.resize(rows, Default::default());
+    for i in 0..rows {
+        m[i].resize(cols, Default::default());
+        for j in 0..cols {
+            m[i][j] = count;
+            count += 1;
+        }
+    }
+    return m;
+}
+
+fn mmult(rows: usize, cols: usize, m1: &amp;Vec::&lt;Vec::&lt;i32&gt;&gt;,
+         m2: &amp;Vec::&lt;Vec::&lt;i32&gt;&gt;, m3: &amp;mut Vec::&lt;Vec::&lt;i32&gt;&gt;) {
+    for i in 0..rows {
+        for j in 0..cols {
+            let mut val = 0;
+            for k in 0..cols {
+                val += m1[i][k] * m2[k][j];
+            }
+            m3[i][j] = val;
+        }
+    }
+}
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let m1 = mkmatrix(SIZE, SIZE);
+    let m2 = mkmatrix(SIZE, SIZE);
+    let mut mm = mkmatrix(SIZE, SIZE);
+
+    for _i in 0..n {
+        mmult(SIZE, SIZE, &amp;m1, &amp;m2, &amp;mut mm);
+    }
+    println!("{} {} {} {}", mm[0][0], mm[2][3], mm[3][2], mm[4][4]);
+}</code></pre></pre>
+<h2 id="porting-notes-11"><a class="header" href="#porting-notes-11">Porting notes</a></h2>
+<h3 id="using-nested-vecs-to-represent-a-matrix"><a class="header" href="#using-nested-vecs-to-represent-a-matrix">Using nested <code>Vec</code>s to represent a matrix</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">int **mkmatrix(int rows, int cols) {
+    int i, j, count = 1;
+    int **m = (int **) malloc(rows * sizeof(int *));
+    for (i=0; i&lt;rows; i++) {
+        m[i] = (int *) malloc(cols * sizeof(int));
+        for (j=0; j&lt;cols; j++) {
+            m[i][j] = count++;
+        }
+    }
+    return(m);
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn mkmatrix(rows: usize, cols: usize) -&gt; Vec::&lt;Vec::&lt;i32&gt;&gt; {
+    let mut count = 1;
+    let mut m = Vec::&lt;Vec::&lt;i32&gt;&gt;::new();
+    m.resize(rows, Default::default());
+    for i in 0..rows {
+        m[i].resize(cols, Default::default());
+        for j in 0..cols {
+            m[i][j] = count;
+            count += 1;
+        }
+    }
+    return m;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We use a two-level, nested <code>Vec</code> data structure where the first level is for the rows and the second level is for the columns. That is similar to the data structure that uses arrays in the C++ version. While it'd be possible to use raw i32 arrays in Rust, it is more idiomatic to use <code>Vec</code> treating <code>Vec</code> as the safe equivalent of raw arrays.</p>
+<h3 id="passing-matrices-to-the-matrix-multiplication-function-using-references"><a class="header" href="#passing-matrices-to-the-matrix-multiplication-function-using-references">Passing matrices to the matrix multiplication function using references</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    int **m1 = mkmatrix(SIZE, SIZE);
+    int **m2 = mkmatrix(SIZE, SIZE);
+    int **mm = mkmatrix(SIZE, SIZE);
+
+    for (i=0; i&lt;n; i++) {
+        mm = mmult(SIZE, SIZE, m1, m2, mm);
+    }
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    let m1 = mkmatrix(SIZE, SIZE);
+    let m2 = mkmatrix(SIZE, SIZE);
+    let mut mm = mkmatrix(SIZE, SIZE);
+
+    for _i in 0..n {
+        mmult(SIZE, SIZE, &amp;m1, &amp;m2, &amp;mut mm);
+    }
+<span class="boring">}</span></code></pre></pre>
+<h3 id="freeing-matrices"><a class="header" href="#freeing-matrices">Freeing matrices</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    freematrix(SIZE, m1);
+    freematrix(SIZE, m2);
+    freematrix(SIZE, mm);
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// empty
+<span class="boring">}</span></code></pre></pre>
+<p>The Rust version doesn't need to explicitly free the matrices because they are automatically dropped at the end of the main function thanks to the ownership mechanism.</p>
+<h2 id="performance-analysis-1"><a class="header" href="#performance-analysis-1">Performance analysis</a></h2>
+<p><a href="programs/../benchmarking-results.html">The benchmark results</a> show that the Rust version is more than 2 times slower than the C++ version.</p>
+<p>We compare the generated code between C++ and Rust.</p>
+<h3 id="c-1"><a class="header" href="#c-1">C++</a></h3>
+<p>Here is the hot loop according to the Linux Perf:</p>
+<p>C++ perfdata</p>
+<pre><code>  5.98 │2b0:   mov    -0x10(%r14,%r8,8),%r10
+  5.93 │       mov    -0x8(%r14,%r8,8),%r11
+  7.04 │       mov    (%r10,%rdi,4),%r10d
+ 11.66 │       imul   -0x8(%rsi,%r8,4),%r10d
+  5.84 │       add    %r9d,%r10d
+  5.71 │       mov    (%r11,%rdi,4),%r11d
+ 10.56 │       imul   -0x4(%rsi,%r8,4),%r11d
+ 11.00 │       mov    (%r14,%r8,8),%r9
+  5.17 │       mov    (%r9,%rdi,4),%r9d
+  4.77 │       imul   (%rsi,%r8,4),%r9d
+  4.52 │       add    %r11d,%r9d
+  4.53 │       add    %r10d,%r9d
+  8.94 │       add    $0x3,%r8
+  4.73 │       cmp    $0x20,%r8
+       │     ↑ jne    2b0
+</code></pre>
+<p>C++ LLVM IR</p>
+<pre><code>106:                                              ; preds = %106, %104
+  %107 = phi i64 [ 0, %104 ], [ %135, %106 ]
+  %108 = phi i32 [ 0, %104 ], [ %134, %106 ]
+  %109 = getelementptr inbounds nuw i32, ptr %103, i64 %107
+  %110 = load i32, ptr %109, align 4, !tbaa !10
+  %111 = getelementptr inbounds nuw ptr, ptr %39, i64 %107
+  %112 = load ptr, ptr %111, align 8, !tbaa !5
+  %113 = getelementptr inbounds nuw i32, ptr %112, i64 %105
+  %114 = load i32, ptr %113, align 4, !tbaa !10
+  %115 = mul nsw i32 %114, %110
+  %116 = add nsw i32 %115, %108
+  %117 = add nuw nsw i64 %107, 1
+  %118 = getelementptr inbounds nuw i32, ptr %103, i64 %117
+  %119 = load i32, ptr %118, align 4, !tbaa !10
+  %120 = getelementptr inbounds nuw ptr, ptr %39, i64 %117
+  %121 = load ptr, ptr %120, align 8, !tbaa !5
+  %122 = getelementptr inbounds nuw i32, ptr %121, i64 %105
+  %123 = load i32, ptr %122, align 4, !tbaa !10
+  %124 = mul nsw i32 %123, %119
+  %125 = add nsw i32 %124, %116
+  %126 = add nuw nsw i64 %107, 2
+  %127 = getelementptr inbounds nuw i32, ptr %103, i64 %126
+  %128 = load i32, ptr %127, align 4, !tbaa !10
+  %129 = getelementptr inbounds nuw ptr, ptr %39, i64 %126
+  %130 = load ptr, ptr %129, align 8, !tbaa !5
+  %131 = getelementptr inbounds nuw i32, ptr %130, i64 %105
+  %132 = load i32, ptr %131, align 4, !tbaa !10
+  %133 = mul nsw i32 %132, %128
+  %134 = add nsw i32 %133, %125
+  %135 = add nuw nsw i64 %107, 3
+  %136 = icmp eq i64 %135, 30
+  br i1 %136, label %137, label %106, !llvm.loop !22
+</code></pre>
+<p>The loop is unrolled by a factor of 3.</p>
+<h3 id="rust-1"><a class="header" href="#rust-1">Rust</a></h3>
+<p>Here is the hot loop according to the Linux Perf:</p>
+<p>Rust perfdata</p>
+<pre><code> 16.54 │ 260:   cmp    %rbx,%rsi
+       │      ↓ je     5c3
+  5.16 │        cmp    %rbx,%r8
+       │      ↓ je     5d2
+  4.99 │        mov    (%r12),%r13
+  4.84 │        cmp    %r13,%rdi
+       │      ↓ jae    5e1
+ 10.44 │        mov    0x8(%rax),%r13
+  5.67 │        mov    0x0(%r13,%rbx,4),%r13d
+  5.73 │        mov    -0x8(%r12),%r14
+  5.16 │        imul   (%r14,%rdi,4),%r13d
+  5.51 │        inc    %rbx
+ 10.59 │        add    %r13d,%r9d
+  5.17 │        add    $0x18,%r12
+ 17.06 │        cmp    $0x1e,%rbx
+       │      ↑ jne    260
+</code></pre>
+<p>Rust LLVM IR</p>
+<pre><code>bb10.us.i:                                        ; preds = %bb17.us.i, %bb7.us.i
+  %iter2.sroa.0.024.us.i = phi i64 [ 0, %bb7.us.i ], [ %_0.i13.us.i, %bb17.us.i ]
+  %val.sroa.0.023.us.i = phi i32 [ 0, %bb7.us.i ], [ %95, %bb17.us.i ]
+  %_0.i13.us.i = add nuw nsw i64 %iter2.sroa.0.024.us.i, 1
+  %exitcond.not.i = icmp eq i64 %iter2.sroa.0.024.us.i, %_47.us.i
+  br i1 %exitcond.not.i, label %panic7.i.invoke, label %bb15.us.i
+
+bb15.us.i:                                        ; preds = %bb10.us.i
+  %_48.us.i = load ptr, ptr %90, align 8, !nonnull !4, !noundef !4
+  %_15.us.i = getelementptr inbounds i32, ptr %_48.us.i, i64 %iter2.sroa.0.024.us.i
+  %_14.us.i = load i32, ptr %_15.us.i, align 4, !noundef !4
+  %exitcond89.not.i = icmp eq i64 %iter2.sroa.0.024.us.i, %m2.val25
+  br i1 %exitcond89.not.i, label %panic7.i.invoke, label %bb16.us.i
+
+bb16.us.i:                                        ; preds = %bb15.us.i
+  call void @llvm.assume(i1 %35)
+  %_19.us.i = getelementptr inbounds %"alloc::vec::Vec&lt;i32&gt;", ptr %m2.val, i64 %iter2.sroa.0.024.us.i
+  %93 = getelementptr inbounds i8, ptr %_19.us.i, i64 16
+  %_57.us.i = load i64, ptr %93, align 8, !noundef !4
+  %_60.us.i = icmp ult i64 %iter1.sroa.0.025.us.i, %_57.us.i
+  br i1 %_60.us.i, label %bb17.us.i, label %panic7.i.invoke
+
+bb17.us.i:                                        ; preds = %bb16.us.i
+  %94 = getelementptr inbounds i8, ptr %_19.us.i, i64 8
+  %_58.us.i = load ptr, ptr %94, align 8, !nonnull !4, !noundef !4
+  %_18.us.i = getelementptr inbounds i32, ptr %_58.us.i, i64 %iter1.sroa.0.025.us.i
+  %_17.us.i = load i32, ptr %_18.us.i, align 4, !noundef !4
+  %_13.us.i = mul i32 %_17.us.i, %_14.us.i
+  %95 = add i32 %_13.us.i, %val.sroa.0.023.us.i
+  %exitcond90.not.i = icmp eq i64 %_0.i13.us.i, 30
+  br i1 %exitcond90.not.i, label %bb12.us.i, label %bb10.us.i
+</code></pre>
+<p>The key differences from the C++ version are the following.</p>
+<p>First, the <code>mmult</code> function isn't inlined into the main function. That makes it non-trivial to constant-propgate the <code>Vec</code> sizes as compile-time constant 30. If intraprocedural constant propagation was implemented indepedent of inlining, it would do but it doesn't seem to be there.</p>
+<p>Second, the bounds checks are not elided. The bounds checks could be hoisted out of the loop (loop invariant code motion) and the special-cased, bounds-check-free version of the innermost loop could be generated (loop versioning). The LLVM backend probably has some form of these implemented but it doesn't seem to trigger here.</p>
+<p>Third, loop unrolling has not been applied. I suspect that because of the above two lack of optimizations, the loop doesn't look simple enough for loop unrolling to kick in.</p>
+<p>Note these are differences in the frontends. The Clang frontend applied these three optimiations for the C++ version. But the Rustc frontend did not for the Rust version. While the LLVM backend could also apply these in theory but it doesn't seem to at least in the given environment.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="methcall"><a class="header" href="#methcall">methcall</a></h1>
+<h2 id="full-source-code-11"><a class="header" href="#full-source-code-11">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id
+// http://www.bagley.org/~doug/shootout/
+
+// with some help from Bill Lear
+
+#include &lt;stdlib.h&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Toggle {
+public:
+    Toggle(bool start_state) : state(start_state) { }
+    virtual ~Toggle() {  }
+    bool value() {
+        return(state);
+    }
+    virtual Toggle&amp; activate() {
+        state = !state;
+        return(*this);
+    }
+    bool state;
+};
+
+class NthToggle : public Toggle {
+public:
+    NthToggle(bool start_state, int max_counter) :
+        Toggle(start_state), count_max(max_counter), counter(0) {
+    }
+    Toggle&amp; activate() {
+        if (++this-&gt;counter &gt;= this-&gt;count_max) {
+            state = !state;
+            counter = 0;
+        }
+        return(*this);
+    }
+private:
+    int count_max;
+    int counter;
+};
+
+
+int
+main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 100000000
+#else
+#define LENGTH 1000000000
+#endif
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+
+    bool val = true;
+    Toggle *toggle = new Toggle(val);
+    for (int i=0; i&lt;n; i++) {
+        val = toggle-&gt;activate().value();
+    }
+    cout &lt;&lt; ((val) ? "true" : "false") &lt;&lt; endl;
+    delete toggle;
+
+    val = true;
+    NthToggle *ntoggle = new NthToggle(val, 3);
+    for (int i=0; i&lt;n; i++) {
+        val = ntoggle-&gt;activate().value();
+    }
+    cout &lt;&lt; ((val) ? "true" : "false") &lt;&lt; endl;
+    delete ntoggle;
+
+    return 0;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+// with some help from Bill Lear
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 100000000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 1000000000;
+
+struct Toggle {
+    state: bool
+}
+
+impl Toggle {
+    fn new(start_state: bool) -&gt; Toggle {
+        Toggle { state: start_state }
+    }
+}
+
+trait Togglable {
+    fn activate(&amp;mut self);
+    fn value(&amp;self) -&gt; bool;
+}
+
+impl Togglable for Toggle {
+    fn activate(&amp;mut self) {
+        self.state = !self.state;
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+
+struct NthToggle {
+    state: bool,
+    count_max: i32,
+    counter: i32,
+}
+
+impl NthToggle {
+    fn new(start_state: bool, max_counter: i32) -&gt; NthToggle {
+        NthToggle {
+            state: start_state,
+            count_max: max_counter,
+            counter: 0,
+        }
+    }
+}
+
+impl Togglable for NthToggle {
+    fn activate(&amp;mut self) {
+        self.counter += 1;
+        if self.counter &gt;= self.count_max {
+            self.state = !self.state;
+            self.counter = 0;
+        }
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut val = true;
+    let mut toggle = Toggle::new(val);
+    for _i in 0..n {
+        toggle.activate();
+        val = toggle.value();
+    }
+    println!("{}", if val { "true" } else { "false" });
+
+    val = true;
+    let mut ntoggle = NthToggle::new(val, 3);
+    for _i in 0..n {
+        ntoggle.activate();
+        val = ntoggle.value();
+    }
+    println!("{}", if val { "true" } else { "false" });
+}</code></pre></pre>
+<h2 id="porting-notes-12"><a class="header" href="#porting-notes-12">Porting notes</a></h2>
+<h3 id="declaring-a-struct-in-place-for-a-class"><a class="header" href="#declaring-a-struct-in-place-for-a-class">Declaring a struct in place for a class</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">class Toggle {
+public:
+    Toggle(bool start_state) : state(start_state) { }
+    virtual ~Toggle() {  }
+    bool value() {
+        return(state);
+    }
+    virtual Toggle&amp; activate() {
+        state = !state;
+        return(*this);
+    }
+    bool state;
+};
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Toggle {
+    state: bool
+}
+
+impl Toggle {
+    fn new(start_state: bool) -&gt; Toggle {
+        Toggle { state: start_state }
+    }
+}
+
+trait Togglable {
+    fn activate(&amp;mut self);
+    fn value(&amp;self) -&gt; bool;
+}
+
+impl Togglable for Toggle {
+    fn activate(&amp;mut self) {
+        self.state = !self.state;
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>There are no classes and structs are used in Rust.</p>
+<p>Member variables and methods aren't placed together in a Rust struct. Member variables are declared in the struct and member methods are declared in the <code>impl</code> block for the struct.</p>
+<p>The <code>new</code> method, which is like a C++ constructor, is usually used to create an instance of the struct. The struct values are often initialized with struct literals, as in <code>Toggle { state: start_state }</code>, as opposed to the C++ member-by-member style.</p>
+<p>The <code>drop</code> method, which is analogous to a C++ destructor but is often omitted because the owership takes care of destruction unless the struct requires a custom logic for deinitization like resource reclamation.</p>
+<p>The methods <code>activate</code> and <code>value</code> would be put in the <code>impl Toggle { ... }</code> otherwise but they are put into a trait <code>Togglable</code> here to handle the use of inheritance, which will be discussed next. A trait is like an interface in Go or Java. For now, note that the struct <code>Toggle</code> implements the trait <code>Togglable</code> that has the two methods <code>activate</code> and <code>value</code> and they are defined in the <code>impl Tooglable for Toggle { ... }</code> block.</p>
+<h3 id="using-a-trait-in-place-for-inheritance"><a class="header" href="#using-a-trait-in-place-for-inheritance">Using a trait in place for inheritance.</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">class NthToggle : public Toggle {
+public:
+    NthToggle(bool start_state, int max_counter) :
+        Toggle(start_state), count_max(max_counter), counter(0) {
+    }
+    Toggle&amp; activate() {
+        if (++this-&gt;counter &gt;= this-&gt;count_max) {
+            state = !state;
+            counter = 0;
+        }
+        return(*this);
+    }
+private:
+    int count_max;
+    int counter;
+};
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct NthToggle {
+    state: bool,
+    count_max: i32,
+    counter: i32,
+}
+
+impl NthToggle {
+    fn new(start_state: bool, max_counter: i32) -&gt; NthToggle {
+        NthToggle {
+            state: start_state,
+            count_max: max_counter,
+            counter: 0,
+        }
+    }
+}
+
+impl Togglable for NthToggle {
+    fn activate(&amp;mut self) {
+        self.counter += 1;
+        if self.counter &gt;= self.count_max {
+            self.state = !self.state;
+            self.counter = 0;
+        }
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Rust is not an object oriented programming lanuage. In the C++ version, the class <code>NthToggle</code> inherits from the class <code>Toggle</code>. Because Rust doesn't support inheritance, we instead use a trait, which is like interfaces in Go or Java. The <code>activate</code> and <code>value</code> methods, which are inherited or overridden, are put into a trait <code>Togglable</code>, as opposed to directly in the <code>impl Toggle { ... }</code> block. The struct <code>NthToggle</code> has three variables, instead of one for <code>Toogle</code> and it also implements the trait <code>Togglable</code>. The <code>impl Togglable for NthToggle { ... }</code> block implements the two methods for <code>NthToggle</code>. That way, the two methods can be separately implemented for <code>Toggle</code> and <code>NthToggle</code> and can be polymorphically called like C++ virtual calls. A caveat is that the <code>state</code> variable and the <code>value</code> method need to be duplicated.</p>
+<h3 id="avoding-unnecessarily-returning-a-reference"><a class="header" href="#avoding-unnecessarily-returning-a-reference">Avoding unnecessarily returning a reference</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">        val = toggle-&gt;activate().value();
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        toggle.activate();
+        val = toggle.value();
+<span class="boring">}</span></code></pre></pre>
+<p>I chose to change the <code>activate</code> method not to return a reference to the instance. I believe that we would want to avoid returning a reference in Rust as it might require lifetime annotations to be used and lead to unnecessary complexity. In this example, we could simply call the <code>value</code> method to get the state value in the second line.</p>
+<h2 id="performance-analysis-2"><a class="header" href="#performance-analysis-2">Performance analysis</a></h2>
+<p><a href="programs/../benchmarking-results.html">The benchmark results</a> show that the Rust version is about 8 times faster than the C++ version.</p>
+<p>We will compare the generated code between C++ and Rust.</p>
+<h3 id="c-2"><a class="header" href="#c-2">C++</a></h3>
+<p>C++ perfdata (the hot function list)</p>
+<pre><code>Overhead  Command   Shared Object        Symbol
+  78.05%  methcall  methcall             [.] main
+  12.20%  methcall  methcall             [.] NthToggle::activate()
+   9.65%  methcall  methcall             [.] Toggle::activate()
+</code></pre>
+<p>C++ perfdata (the main function)</p>
+<pre><code>  4.86 │ 50:   mov    (%r14),%rax
+  4.73 │       mov    %r14,%rdi
+ 40.76 │     → call   *0x10(%rax)
+  2.60 │       dec    %ebp
+  4.86 │     ↑ jne    50
+</code></pre>
+<p>C++ perfdata (<code>Toggle::activate()</code>)</p>
+<pre><code> 21.28 │     mov  %rdi,%rax
+ 39.85 │     xorb $0x1,0x8(%rdi)
+ 38.87 │   ← ret
+</code></pre>
+<p>C++ perfdata (<code>NthToggle::activate()</code>)</p>
+<pre><code> 10.18 │      mov  %rdi,%rax
+  9.78 │      mov  0x10(%rdi),%ecx
+ 10.25 │      inc  %ecx
+ 21.22 │      mov  %ecx,0x10(%rdi)
+  9.13 │      cmp  0xc(%rdi),%ecx
+       │    ↓ jl   1b
+  3.94 │      xorb $0x1,0x8(%rax)
+  7.03 │      movl $0x0,0x10(%rax)
+ 28.45 │1b: ← ret
+</code></pre>
+<p>It looks like the <code>activate</code> call isn't devirtualized or inlined.</p>
+<h3 id="rust-2"><a class="header" href="#rust-2">Rust</a></h3>
+<p>Rust perfdata (the host function list)</p>
+<pre><code>Overhead  Command   Shared Object     Symbol
+  99.92%  methcall  methcall          [.] methcall::main
+</code></pre>
+<p>Rust perfdata (the host loop in the main function)</p>
+<pre><code>  2.52 │280:   xor    %dil,%cl
+  4.92 │       xor    %r8b,%cl
+  4.50 │       xor    %r9b,%cl
+  2.40 │       xor    %r11b,%cl
+  3.75 │       add    $0xfffffffc,%ebx
+  3.51 │     ↑ je     23a
+  4.33 │291:   lea    0x1(%rdx),%r8d
+  6.20 │       cmp    $0x2,%edx
+  3.23 │       setge  %dil
+  7.95 │       cmovge %esi,%r8d
+  3.92 │       lea    0x1(%r8),%edx
+  2.63 │       cmp    $0x2,%r8d
+  9.47 │       cmovge %esi,%edx
+  4.91 │       setge  %r8b
+  2.28 │       mov    $0x0,%r10d
+  3.27 │       cmp    $0x2,%edx
+  2.52 │       setge  %r9b
+  3.39 │     ↓ jge    2c3
+  2.75 │       inc    %edx
+  1.99 │       mov    %edx,%r10d
+  3.63 │2c3:   mov    $0x0,%edx
+  2.92 │       cmp    $0x2,%r10d
+  2.92 │       setge  %r11b
+  3.80 │     ↑ jge    280
+  1.93 │       inc    %r10d
+  2.83 │       mov    %r10d,%edx
+  1.52 │     ↑ jmp    280
+</code></pre>
+<p>We can see that the <code>activate</code> call is devirtualized, inlined and the loop is unrolled by a factor of 4. This explains the performance difference.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="moments"><a class="header" href="#moments">moments</a></h1>
+<h2 id="full-source-code-12"><a class="header" href="#full-source-code-12">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id
+// http://www.bagley.org/~doug/shootout/
+// Calculate statistical moments of a region, from Bill Lear
+// Modified by Tamás Benkõ
+// Further modified by Tom Hyer
+
+#include &lt;vector&gt;
+#include &lt;numeric&gt;
+#include &lt;iterator&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+template &lt;class T&gt;
+struct moments {
+public:
+    template &lt;class InputIterator&gt;
+    moments(InputIterator begin, InputIterator end)
+        : median(0.0), mean(0.0), average_deviation(0.0),
+          standard_deviation(0.0), variance(0.0),
+          skew(0.0), kurtosis(0.0)
+        {
+            T sum = accumulate(begin, end, 0.0);
+            size_t N = end - begin;
+            mean = sum / N;
+            for (InputIterator i = begin; i != end; ++i) {
+                T deviation = *i - mean;
+                average_deviation += fabs(deviation);
+                T temp = deviation * deviation;
+                variance += temp;
+                temp *= deviation;
+                skew += temp;
+                kurtosis += temp * deviation;
+            }
+            average_deviation /= N;
+            variance /= (N - 1);
+            standard_deviation = sqrt(variance);
+
+            if (variance) {
+                skew /= (N * variance * standard_deviation);
+                kurtosis = kurtosis/(N * variance * variance) - 3.0;
+            }
+
+            InputIterator mid = begin+N/2;
+            nth_element(begin, mid, end);
+            if (N % 2 == 0) {
+                InputIterator next_biggest = max_element(begin, mid);
+                median = (*mid+*next_biggest)/2;
+            }
+            else
+                median = *mid;
+        }
+
+    T median;
+    T mean;
+    T average_deviation;
+    T standard_deviation;
+    T variance;
+    T skew;
+    T kurtosis;
+};
+
+int main(int argc, char**argv) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 500000
+#else
+#define LENGTH 5000000
+#endif
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    vector&lt;double&gt; v;
+    double d;
+
+    for (unsigned i = 0; i != n; ++i) v.push_back(i);
+    moments&lt;double&gt; m(v.begin(), v.end());
+
+    printf("n:                  %d\n", v.end() - v.begin());
+    printf("median:             %f\n", m.median);
+    printf("mean:               %f\n", m.mean);
+    printf("average_deviation:  %f\n", m.average_deviation);
+    printf("standard_deviation: %f\n", m.standard_deviation);
+    printf("variance:           %f\n", m.variance);
+    printf("skew:               %f\n", m.skew);
+    printf("kurtosis:           %f\n", m.kurtosis);
+
+    return 0;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+// Calculate statistical moments of a region, from Bill Lear
+// Modified by Tamás Benkõ
+// Further modified by Tom Hyer
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 500000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 5000000;
+
+struct Moments&lt;T&gt; {
+    median: T,
+    mean: T,
+    average_deviation: T,
+    standard_deviation: T,
+    variance: T,
+    skew: T,
+    kurtosis: T,
+}
+
+impl Moments&lt;f64&gt; {
+    fn new(slice: &amp;mut [f64]) -&gt; Moments&lt;f64&gt; {
+        let mut m = Moments::&lt;f64&gt; {
+            median: 0.0,
+            mean: 0.0,
+            average_deviation: 0.0,
+            standard_deviation: 0.0,
+            variance: 0.0,
+            skew: 0.0,
+            kurtosis: 0.0,
+        };
+
+        let sum: f64 = slice.iter().sum();
+        let n = slice.iter().count();
+        m.mean = sum / (n as f64);
+        for e in slice.iter() {
+            let deviation = *e - m.mean;
+            m.average_deviation += deviation.abs();
+            let mut temp = deviation * deviation;
+            m.variance += temp;
+            temp *= deviation;
+            m.skew += temp;
+            m.kurtosis += temp * deviation;
+        }
+        m.average_deviation /= n as f64;
+        m.variance /= (n - 1) as f64;
+        m.standard_deviation = m.variance.sqrt();
+
+        if m.variance != 0.0 {
+            m.skew /= (n as f64) * m.variance * m.standard_deviation;
+            m.kurtosis =
+                m.kurtosis / ((n as f64) * m.variance * m.variance) - 3.0;
+        }
+
+        let (before, mid, _after) =
+            slice.select_nth_unstable_by(n / 2,
+                                         |a, b| a.partial_cmp(b).unwrap());
+        if n % 2 == 0 {
+            let next_biggest =
+                before.iter().max_by(|a, b| a.partial_cmp(b).unwrap());
+            m.median = (*mid + *next_biggest.unwrap()) / 2.0;
+        } else {
+            m.median = *mid;
+        }
+
+        return m;
+    }
+}
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+    let mut v = Vec::&lt;f64&gt;::new();
+
+    for i in 0..n {
+        v.push(i as f64);
+    }
+    let m = Moments::&lt;f64&gt;::new(&amp;mut v[..]);
+
+    println!("n:                  {}", v.iter().count());
+    println!("median:             {:.6}", m.median);
+    println!("mean:               {:.6}", m.mean);
+    println!("average_deviation:  {:.6}", m.average_deviation);
+    println!("standard_deviation: {:.6}", m.standard_deviation);
+    println!("variance:           {:.6}", m.variance);
+    println!("skew:               {:.6}", m.skew);
+    println!("kurtosis:           {:.6}", m.kurtosis);
+}
+</code></pre></pre>
+<h2 id="porting-notes-13"><a class="header" href="#porting-notes-13">Porting notes</a></h2>
+<h3 id="passing-the-input-vector-using-a-slice-as-opposed-to-c-iterators"><a class="header" href="#passing-the-input-vector-using-a-slice-as-opposed-to-c-iterators">Passing the input vector using a slice, as opposed to C++ iterators</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">    template &lt;class InputIterator&gt;
+    moments(InputIterator begin, InputIterator end)
+        : median(0.0), mean(0.0), average_deviation(0.0),
+          standard_deviation(0.0), variance(0.0),
+          skew(0.0), kurtosis(0.0)
+        {
+            ...
+        }
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    fn new(slice: &amp;mut [f64]) -&gt; Moments&lt;f64&gt; {
+        let mut m = Moments::&lt;f64&gt; {
+            median: 0.0,
+            mean: 0.0,
+            average_deviation: 0.0,
+            standard_deviation: 0.0,
+            variance: 0.0,
+            skew: 0.0,
+            kurtosis: 0.0,
+        };
+        ...
+    }
+<span class="boring">}</span></code></pre></pre>
+<p>The C++ version passes the input vector using its <code>begin</code> and <code>end</code> iterators to the <code>moments</code> constructor.</p>
+<p>In constract, the Rust version passes a mutable slice of the input vector. <code>&amp;mut [f64]</code> represents a mutable slice of type <code>f64</code>. <code>&amp;mut v[..]</code> is the syntax that takes a mutable slice of a vector <code>v</code>. If it were an immutable slice, the syntax would be <code>&amp;[f64]</code> and <code>&amp;v[..]</code>, respectively.</p>
+<p>Slices are safer than the C++ iterators in that they are bounds-checked and, being single entities, they are less error-prone, avoiding potential mistakes like mixing up iterators from different containers or passing them in a wrong order.</p>
+<p>The Rust version uses a slice instead of an iterator because the <code>select_nth_unstable_by</code> method that is used to implement the C++ <code>std::nth_element</code> below is available for a slice but not for an iterator.</p>
+<h3 id="explicitly-converting-types"><a class="header" href="#explicitly-converting-types">Explicitly converting types</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">            mean = sum / N;
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        m.mean = sum / (n as f64);
+<span class="boring">}</span></code></pre></pre>
+<p>In the C++ version, the division implicit converts the <code>N</code> of type <code>size_t</code> to <code>double</code>.</p>
+<p>In Rust, implicit conversions are not supported for safety reasons and types need to be explicitly converted. The Rust version uses the <code>as</code> operator as in <code>(n as f64)</code> to convert from <code>usize</code> to <code>f64</code>.</p>
+<h3 id="implementing-stdnth_element-with-select_nth_unstable_by-multiple-return-values-as-a-tuple-explicitly-handling-64-bit-floating-point-not-having-a-total-order"><a class="header" href="#implementing-stdnth_element-with-select_nth_unstable_by-multiple-return-values-as-a-tuple-explicitly-handling-64-bit-floating-point-not-having-a-total-order">Implementing <code>std::nth_element</code> with <code>select_nth_unstable_by</code>, multiple return values as a tuple, explicitly handling 64-bit floating point not having a total order</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">            InputIterator mid = begin+N/2;
+            nth_element(begin, mid, end);
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>        let (before, mid, _after) =
+            slice.select_nth_unstable_by(n / 2,
+                                         |a, b| a.partial_cmp(b).unwrap());
+<span class="boring">}</span></code></pre></pre>
+<p>The C++ version uses the <a href="https://en.cppreference.com/w/cpp/algorithm/nth_element"><code>std::nth_element</code></a> function to find the median value.</p>
+<p>The Rust version uses the <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.select_nth_unstable_by"><code>select_nth_unstable_by</code></a> method as an equivalent.</p>
+<p><code>select_nth_unstable_by</code> uses a tuple return type to return multiple values. <code>let (before, mid, _after) = ...</code> declares and assigns each element of the returned tuple as local variables conveniently in a single line.</p>
+<p>The 64-bit floating point type (<code>double</code> or <code>f64</code>) doesn't technically have a total order because of <code>NaN</code>. So there could be subtle undefined or implementation-dependent behaviors where strict ordering is expected. The Rust version makes it explicit by not letting <code>f64</code> implement the <code>cmp</code> method. The closure <code>|a, b| a.partial_cmp(b).unwrap()</code> makes it explicit that it would panic if <code>NaN</code> is encountered, though it doesn't occur in this program.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="nestedloop"><a class="header" href="#nestedloop">nestedloop</a></h1>
+<h2 id="full-source-code-13"><a class="header" href="#full-source-code-13">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;
+
+using namespace std;
+
+int main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 30
+#else
+#define LENGTH 46
+#endif
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    int a, b, c, d, e, f, x=0;
+        
+    for (a=0; a&lt;n; a++)
+        for (b=0; b&lt;n; b++)
+            for (c=0; c&lt;n; c++)
+                for (d=0; d&lt;n; d++)
+                    for (e=0; e&lt;n; e++)
+                        for (f=0; f&lt;n; f++)
+                            x++;
+
+    cout &lt;&lt; x &lt;&lt; endl;
+    return(0);
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 30;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 46;
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut x: i32 = 0;
+
+    for _a in 0..n {
+        for _b in 0..n {
+            for _c in 0..n {
+                for _d in 0..n {
+                    for _e in 0..n {
+                        for _f in 0..n {
+                            x = x.wrapping_add(1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    println!("{}", x);
+}</code></pre></pre>
+<h2 id="porting-notes-14"><a class="header" href="#porting-notes-14">Porting notes</a></h2>
+<h3 id="integer-addition-without-trapping"><a class="header" href="#integer-addition-without-trapping">Integer addition without trapping</a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">                            x++;
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>                            x = x.wrapping_add(1);
+<span class="boring">}</span></code></pre></pre>
+<p>In Rust, the normal integer addition would panic if it causes an overflow, unlike in C++. To avoid this, the Rust version uses the <code>wrapping_add</code> method.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="objinst"><a class="header" href="#objinst">objinst</a></h1>
+<h2 id="full-source-code-14"><a class="header" href="#full-source-code-14">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;stdlib.h&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Toggle {
+public:
+    Toggle(bool start_state) : state(start_state) { }
+    virtual ~Toggle() {  }
+    bool value() {
+        return(state);
+    }
+    virtual Toggle&amp; activate() {
+        state = !state;
+        return(*this);
+    }
+    bool state;
+};
+
+class NthToggle : public Toggle {
+public:
+    NthToggle(bool start_state, int max_counter) :
+        Toggle(start_state), count_max(max_counter), counter(0) {
+    }
+    Toggle&amp; activate() {
+        if (++this-&gt;counter &gt;= this-&gt;count_max) {
+            state = !state;
+            counter = 0;
+        }
+        return(*this);
+    }
+private:
+    int count_max;
+    int counter;
+};
+
+int
+main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 1000000
+#else
+#define LENGTH 70000000
+#endif
+    int n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+
+    Toggle *toggle1 = new Toggle(true);
+    for (int i=0; i&lt;5; i++) {
+        cout &lt;&lt; ((toggle1-&gt;activate().value()) ? "true" : "false") &lt;&lt; endl;
+    }
+    delete toggle1;
+    for (int i=0; i&lt;n; i++) {
+        Toggle *toggle = new Toggle(true);
+        delete toggle;
+    }
+    
+    cout &lt;&lt; endl;
+    
+    NthToggle *ntoggle1 = new NthToggle(true, 3);
+    for (int i=0; i&lt;8; i++) {
+        cout &lt;&lt; ((ntoggle1-&gt;activate().value()) ? "true" : "false") &lt;&lt; endl;
+    }
+    delete ntoggle1;
+    for (int i=0; i&lt;n; i++) {
+        NthToggle *ntoggle = new NthToggle(true, 3);
+        delete ntoggle;
+    }
+    return 0;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 1000000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 70000000;
+
+struct Toggle {
+    state: bool
+}
+
+impl Toggle {
+    fn new(start_state: bool) -&gt; Toggle {
+        Toggle { state: start_state }
+    }
+}
+
+trait Togglable {
+    fn activate(&amp;mut self);
+    fn value(&amp;self) -&gt; bool;
+}
+
+impl Togglable for Toggle {
+    fn activate(&amp;mut self) {
+        self.state = !self.state;
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+
+struct NthToggle {
+    state: bool,
+    count_max: i32,
+    counter: i32,
+}
+
+impl NthToggle {
+    fn new(start_state: bool, max_counter: i32) -&gt; NthToggle {
+        NthToggle {
+            state: start_state,
+            count_max: max_counter,
+            counter: 0,
+        }
+    }
+}
+
+impl Togglable for NthToggle {
+    fn activate(&amp;mut self) {
+        self.counter += 1;
+        if self.counter &gt;= self.count_max {
+            self.state = !self.state;
+            self.counter = 0;
+        }
+    }
+    fn value(&amp;self) -&gt; bool {
+        return self.state;
+    }
+}
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut toggle1 = Toggle::new(true);
+    for _i in 0..5 {
+        toggle1.activate();
+        println!("{}", if toggle1.value() { "true" } else { "false" });
+    }
+    for _i in 0..n {
+        let _toggle = Toggle::new(true);
+    }
+
+    println!();
+
+    let mut ntoggle1 = NthToggle::new(true, 3);
+    for _i in 0..8 {
+        ntoggle1.activate();
+        println!("{}", if ntoggle1.value() { "true" } else { "false" });
+    }
+    for _i in 0..n {
+        let _ntoggle = NthToggle::new(true, 3);
+    }
+}
+</code></pre></pre>
+<h2 id="porting-notes-15"><a class="header" href="#porting-notes-15">Porting notes</a></h2>
+<p>This program is similar to <a href="programs/./methcall.html">methcall</a>. The <code>Toggle</code> and the <code>NthToggle</code> classes or structs are identical and the usage of them are somewhat different in the <code>main</code> function.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="random"><a class="header" href="#random">random</a></h1>
+<h2 id="full-source-code-15"><a class="header" href="#full-source-code-15">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+
+#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;math.h&gt;
+
+using namespace std;
+
+#define IM 139968
+#define IA 3877
+#define IC 29573
+
+inline double gen_random(double max) {
+    static long last = 42;
+    last = (last * IA + IC) % IM;
+    return( max * last / IM );
+}
+
+int main(int argc, char *argv[]) {
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 4000000
+#else
+#define LENGTH 400000000
+#endif
+    int N = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    double result = 0;
+    
+    while (N--) {
+        result = gen_random(100.0);
+    }
+    cout.precision(9);
+    cout.setf(ios::fixed);
+    cout &lt;&lt; result &lt;&lt; endl;
+    return(0);
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 4000000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 400000000;
+
+const IM: i64 = 139968;
+const IA: i64 = 3877;
+const IC: i64 = 29573;
+
+fn gen_random(last_random: &amp;mut i64, max: f64) -&gt; f64 {
+    let new_last = (*last_random * IA + IC) % IM;
+    *last_random = new_last;
+    return max * (new_last as f64) / (IM as f64);
+}
+
+fn main() {
+    let mut args = env::args();
+    let mut n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut result: f64 = 0.0;
+    let mut last_random: i64 = 42;
+
+    while n != 0 {
+        n -= 1;
+        result = gen_random(&amp;mut last_random, 100.0);
+    }
+
+    println!("{:.9}", result);
+}</code></pre></pre>
+<h2 id="porting-notes-16"><a class="header" href="#porting-notes-16">Porting notes</a></h2>
+<p>The <code>gen_random</code> function is the same as the one in <a href="programs/./heapsort.html">heapsort</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sieve"><a class="header" href="#sieve">sieve</a></h1>
+<h2 id="full-source-code-16"><a class="header" href="#full-source-code-16">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;list&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+void sieve(list&lt;int&gt;&amp; unknown, vector&lt;int&gt;&amp; primes)
+{
+  while (!unknown.empty())
+  {
+    int p = unknown.front();
+    unknown.pop_front();
+    list&lt;int&gt;::iterator i = unknown.begin();
+    while (i != unknown.end())
+    {
+      if (*i % p)
+        ++i;
+      else
+        i = unknown.erase(i);
+    }
+    primes.push_back(p);
+  }
+}
+
+int main(int argc, char *argv[]) 
+{
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 50
+#else
+#define LENGTH 500
+#endif
+  size_t NUM = (argc == 2 ? (atoi(argv[1]) &lt; 1 ? 1 : atoi(argv[1])): LENGTH);
+
+  vector&lt;int&gt; primes;
+
+  // run the sieve repeatedly
+  while (NUM--) {
+    list&lt;int&gt; integers;
+    for (int i = 2; i &lt; 8192; ++i)
+      integers.push_back(i);
+    primes.clear();
+    sieve(integers, primes);
+  }
+
+  cout &lt;&lt; "Count: " &lt;&lt; primes.size() &lt;&lt; endl;
+  return 0;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+use std::env;
+
+// Use VecDeque instead of LinkedList because Rust doesn't have stable
+// ways to remove items from LinkedList and strongly encourage using
+// Vec or VecDeque.
+use std::collections::VecDeque;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 50;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 500;
+
+fn sieve(unknown: &amp;mut VecDeque::&lt;i32&gt;, primes: &amp;mut Vec::&lt;i32&gt;) {
+    while unknown.len() &gt; 0 {
+        let p = unknown.pop_front().unwrap();
+        unknown.retain(|&amp;x| x % p != 0);
+        primes.push(p);
+    }
+}
+
+fn main() {
+    let mut args = env::args();
+    let mut num = if args.len() == 2 {
+        let arg1 = args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap();
+        if arg1 &lt; 1 { 1 } else { arg1 }
+    } else {
+        LENGTH
+    };
+    let mut primes = Vec::&lt;i32&gt;::new();
+
+    // run the sieve repeatedly
+    while num != 0 {
+        let mut integers = VecDeque::&lt;i32&gt;::new();
+        for i in 2..8192 {
+            integers.push_back(i);
+        }
+        primes.clear();
+        sieve(&amp;mut integers, &amp;mut primes);
+        num -= 1;
+    }
+
+    println!("Count: {}", primes.len());
+}</code></pre></pre>
+<h2 id="porting-notes-17"><a class="header" href="#porting-notes-17">Porting notes</a></h2>
+<h3 id="using-vecdeque-instead-of-linkedlist"><a class="header" href="#using-vecdeque-instead-of-linkedlist">Using <code>VecDeque</code> instead of <code>LinkedList</code></a></h3>
+<p>C++</p>
+<pre><code class="language-cpp">void sieve(list&lt;int&gt;&amp; unknown, vector&lt;int&gt;&amp; primes)
+{
+  while (!unknown.empty())
+  {
+    int p = unknown.front();
+    unknown.pop_front();
+    list&lt;int&gt;::iterator i = unknown.begin();
+    while (i != unknown.end())
+    {
+      if (*i % p)
+        ++i;
+      else
+        i = unknown.erase(i);
+    }
+    primes.push_back(p);
+  }
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn sieve(unknown: &amp;mut VecDeque::&lt;i32&gt;, primes: &amp;mut Vec::&lt;i32&gt;) {
+    while unknown.len() &gt; 0 {
+        let p = unknown.pop_front().unwrap();
+        unknown.retain(|&amp;x| x % p != 0);
+        primes.push(p);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The Rust <code>LinkedList</code> interestingly does not support mutation such as
+element insertion and removal in its stable API, as of this
+writing. Rust instead encourages to use <code>VecDeque</code> which is
+double-sided vector for performance reasons when a doubly linked list
+would be otherwise used. So the Rust version uses <code>VecDeque</code> even
+though it may have different performance characteristics from the C++
+<code>std::list</code>. <a href="programs/../benchmarking-results.html">The benchmark results</a> shows
+that the performance differences are small.</p>
+<p>Furthermore, the Rust version uses the <code>retain</code> method to remove
+elements from the <code>VecDeque</code> I believe this is less error-prone than
+the C++ version where it uses an iteration over the list along with
+the <code>erase</code> function during the iteration.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="strcat"><a class="header" href="#strcat">strcat</a></h1>
+<h2 id="full-source-code-17"><a class="header" href="#full-source-code-17">Full source code</a></h2>
+<p>C++</p>
+<pre><code class="language-cpp">// -*- mode: c++ -*-
+// $Id$
+// http://www.bagley.org/~doug/shootout/
+// with help from PeterB
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+#ifdef SMALL_PROBLEM_SIZE
+#define LENGTH 1000000
+#else
+#define LENGTH 5000000
+#endif
+    int i, n = ((argc == 2) ? atoi(argv[1]) : LENGTH);
+    string str;
+    size_t capacity = 31;
+    str.reserve(capacity); // as per C-string
+    size_t newLength = 6;
+    for (i = 0; i &lt; n; i++)
+    {
+        if(newLength &gt; capacity)
+        {
+            capacity *= 2;
+            str.reserve(capacity);
+        }
+        str += "hello\n";
+        newLength += 6;
+    }
+    cout &lt;&lt; str.length() &lt;&lt; endl;
+    return 0;
+}
+</code></pre>
+<p>Rust</p>
+<pre><pre class="playground"><code class="language-rust">// Adapted from https://github.com/llvm/llvm-test-suite and
+// http://www.bagley.org/~doug/shootout/
+// with help from PeterB
+use std::env;
+
+#[cfg(feature = "small_problem_size")]
+const LENGTH: i32 = 1000000;
+
+#[cfg(not(feature = "small_problem_size"))]
+const LENGTH: i32 = 5000000;
+
+fn main() {
+    let mut args = env::args();
+    let n = if args.len() == 2 {
+        args.nth(1).unwrap().parse::&lt;i32&gt;().unwrap()
+    } else {
+        LENGTH
+    };
+
+    let mut str = String::new();
+    let mut capacity: usize = 31;
+    str.reserve(capacity);
+    let mut new_length: usize = 6;
+    for _i in 0..n {
+        if new_length &gt; capacity {
+            capacity *= 2;
+            str.reserve(capacity);
+        }
+        str.push_str("hello\n");
+        new_length += 6;
+    }
+    println!("{}", str.len());
+}</code></pre></pre>
+<h2 id="porting-notes-18"><a class="header" href="#porting-notes-18">Porting notes</a></h2>
+<p>The porting was straightforward with no specific notes.</p>
+<h2 id="performance-analysis-3"><a class="header" href="#performance-analysis-3">Performance analysis</a></h2>
+<p><a href="programs/../benchmarking-results.html">The benchmark results</a> show that the Rust version is more than 2 times faster than the C++ version.</p>
+<p>We compare the generated code between C++ and Rust.</p>
+<h3 id="c-3"><a class="header" href="#c-3">C++</a></h3>
+<p>C++ perfdata (the host function list)</p>
+<pre><code>Overhead  Command  Shared Object         Symbol
+  19.78%  strcat   libstdc++.so.6.0.30   [.] std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;::_M_append(char const*, unsigned long)
+  12.01%  strcat   libc.so.6             [.] __memmove_avx_unaligned_erms
+   8.25%  strcat   strcat                [.] main
+   6.77%  strcat   [unknown]             [k] 0xffffffff9fd9f917
+   3.87%  strcat   libc.so.6             [.] __memmove_avx_unaligned
+   2.43%  strcat   libstdc++.so.6.0.30   [.] memcpy@plt
+   1.95%  strcat   strcat                [.] std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;::_M_append(char const*, unsigned long)@plt
+</code></pre>
+<p>C++ perfdata (the hottest function <code>std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;::_M_append(char const*, unsigned long)@@GLIBCXX_3.4.21</code>)</p>
+<pre><code>  7.22 │      endbr64
+  9.87 │      push    %rbp
+  2.46 │      mov     %rdx,%r8
+       │      push    %rbx
+  4.92 │      mov     %rdi,%rbx
+  2.46 │      sub     $0x8,%rsp
+  2.46 │      mov     0x8(%rdi),%rax
+       │      mov     (%rdi),%rdi
+       │      lea     (%rdx,%rax,1),%rbp
+  2.46 │      lea     0x10(%rbx),%rdx
+  2.48 │      cmp     %rdx,%rdi
+       │    ↓ je      78
+       │      mov     0x10(%rbx),%rdx
+  7.27 │28:   cmp     %rbp,%rdx
+       │    ↓ jb      60
+  4.87 │      test    %r8,%r8
+       │    ↓ je      46
+  7.33 │      add     %rax,%rdi
+  7.40 │      cmp     $0x1,%r8
+       │    ↓ je      80
+  2.46 │      mov     %r8,%rdx
+  7.35 │    → call    memcpy@plt
+       │      mov     (%rbx),%rdi
+  2.46 │46:   mov     %rbp,0x8(%rbx)
+  2.46 │      mov     %rbx,%rax
+  2.37 │      movb    $0x0,(%rdi,%rbp,1)
+  7.11 │      add     $0x8,%rsp
+  9.64 │      pop     %rbx
+       │      pop     %rbp
+  4.94 │    ← ret
+</code></pre>
+<p>C++ perfdata (The second hottest function <code>__memcpy_avx_unaligned_erms</code>)</p>
+<pre><code> 16.08 │ 30:   cmp        $0x10,%edx
+       │     ↓ jae        62
+  8.10 │       cmp        $0x8,%edx
+       │     ↓ jae        80
+  4.07 │       cmp        $0x4,%edx
+       │     ↓ jae        55
+       │       cmp        $0x1,%edx
+       │     ↓ jl         54
+       │       mov        (%rsi),%cl
+       │     ↓ je         52
+       │       movzwl     -0x2(%rsi,%rdx,1),%esi
+       │       mov        %si,-0x2(%rdi,%rdx,1)
+       │ 52:   mov        %cl,(%rdi)
+       │ 54: ← ret
+  3.77 │ 55:   mov        -0x4(%rsi,%rdx,1),%ecx
+  4.06 │       mov        (%rsi),%esi
+ 12.17 │       mov        %ecx,-0x4(%rdi,%rdx,1)
+  4.06 │       mov        %esi,(%rdi)
+ 12.05 │     ← ret
+</code></pre>
+<p>C++ LLVM IR (the loop in the main function, the frontend output)</p>
+<pre><code>16:                                               ; preds = %14, %38
+  %17 = phi i64 [ %39, %38 ], [ 6, %14 ]
+  %18 = phi i64 [ %30, %38 ], [ 31, %14 ]
+  %19 = phi i32 [ %40, %38 ], [ 0, %14 ]
+  %20 = icmp ugt i64 %17, %18
+  br i1 %20, label %21, label %29
+
+21:                                               ; preds = %16
+  %22 = shl i64 %18, 1
+  invoke void @_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE7reserveEm(ptr noundef nonnull align 8 dereferenceable(32) %3, i64 noundef %22)
+          to label %29 unwind label %25
+
+23:                                               ; preds = %10
+  %24 = landingpad { ptr, i32 }
+          cleanup
+  br label %83
+
+25:                                               ; preds = %21, %36
+  %26 = landingpad { ptr, i32 }
+          cleanup
+  br label %83
+
+27:                                               ; preds = %34, %42, %53, %62, %63, %68, %71
+  %28 = landingpad { ptr, i32 }
+          cleanup
+  br label %83
+
+29:                                               ; preds = %21, %16
+  %30 = phi i64 [ %22, %21 ], [ %18, %16 ]
+  %31 = load i64, ptr %13, align 8, !tbaa !12
+  %32 = add i64 %31, -4611686018427387898
+  %33 = icmp ult i64 %32, 6
+  br i1 %33, label %34, label %36
+
+34:                                               ; preds = %29
+  invoke void @_ZSt20__throw_length_errorPKc(ptr noundef nonnull @.str.1) #11
+          to label %35 unwind label %27
+
+35:                                               ; preds = %34
+  unreachable
+
+36:                                               ; preds = %29
+  %37 = invoke noundef nonnull align 8 dereferenceable(32) ptr @_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_appendEPKcm(ptr noundef nonnull align 8 dereferenceable(32) %3, ptr noundef nonnull @.str, i64 noundef 6
+)
+          to label %38 unwind label %25
+
+38:                                               ; preds = %36
+  %39 = add nuw nsw i64 %17, 6
+  %40 = add nuw nsw i32 %19, 1
+  %41 = icmp eq i32 %40, %11
+  br i1 %41, label %42, label %16, !llvm.loop !16
+</code></pre>
+<p>The loop body in the main function doesn't have the <code>basic_string::append</code> and its internal <code>memcpy</code> inlined. IThey aren't probably defined in the C++ <code>string</code> and the <code>string.h</code> header files as its body is not part of the compilation unit. Even though it uses the SIMD (AVX) version of the <code>memcpy</code>, it doesn't use the AVX instructions because it copies only 6 bytes at a time.</p>
+<h3 id="rust-3"><a class="header" href="#rust-3">Rust</a></h3>
+<p>Rust perfdata (the hot function list)</p>
+<pre><code>Overhead  Command  Shared Object     Symbol
+  34.98%  strcat   strcat            [.] strcat::main
+</code></pre>
+<p>Rust perfdata</p>
+<pre><code>       │1d0:   mov    0x8(%rsp),%rax
+  4.84 │       cmp    %rbx,%r12
+       │     ↓ jbe    1e8
+       │       add    %rbx,%rbx
+       │       mov    %rax,%rcx
+       │       sub    %rsi,%rcx
+       │       cmp    %rbx,%rcx
+       │     ↓ jb     218
+  3.24 │1e8:   sub    %rsi,%rax
+ 18.89 │       cmp    $0x5,%rax
+       │     ↓ jbe    236
+  3.25 │1f1:   mov    0x10(%rsp),%rax
+ 14.99 │       movw   $0xa6f,0x4(%rax,%rsi,1)
+ 19.38 │       movl   $0x6c6c6568,(%rax,%rsi,1)
+  2.98 │       add    $0x6,%rsi
+ 13.03 │       mov    %rsi,0x18(%rsp)
+  3.25 │       add    $0x6,%r12
+  3.27 │       dec    %r15d
+ 12.90 │     ↑ jne    1d0
+</code></pre>
+<p>Rust LLVM IR (the loop body in the main function, the frontend output)</p>
+<pre><code>bb29:                                             ; preds = %bb8.preheader, %bb32
+  %len.i.i.i.pre62 = phi i64 [ %49, %bb32 ], [ %len.i.i.i.pre62.pre, %bb8.preheader ]
+  %capacity.sroa.0.051 = phi i64 [ %capacity.sroa.0.1, %bb32 ], [ 31, %bb8.preheader ]
+  %new_length.sroa.0.050 = phi i64 [ %50, %bb32 ], [ 6, %bb8.preheader ]
+  %iter.sroa.0.049 = phi i32 [ %47, %bb32 ], [ 0, %bb8.preheader ]
+  %47 = add nuw nsw i32 %iter.sroa.0.049, 1
+  %_18 = icmp ugt i64 %new_length.sroa.0.050, %capacity.sroa.0.051
+  %self2.i.i.i.pre64 = load i64, ptr %str, align 8, !range !33
+  br i1 %_18, label %bb10, label %bb12
+
+bb10:                                             ; preds = %bb29
+  %48 = shl i64 %capacity.sroa.0.051, 1
+  %_10.i31 = sub i64 %self2.i.i.i.pre64, %len.i.i.i.pre62
+  %_7.i32 = icmp ult i64 %_10.i31, %48
+  br i1 %_7.i32, label %bb1.i33, label %bb12, !prof !32
+
+bb1.i33:                                          ; preds = %bb10
+; invoke alloc::raw_vec::RawVecInner&lt;A&gt;::reserve::do_reserve_and_handle
+  invoke fastcc void @"_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h0f49121d9a52801dE"(ptr noalias noundef nonnull align 8 dereferenceable(16) %str, i64 noundef %len.i.i.i.pre62, i64 noundef %48)
+          to label %bb1.i33.bb12_crit_edge unwind label %cleanup2.loopexit
+
+bb1.i33.bb12_crit_edge:                           ; preds = %bb1.i33
+  %len.i.i.i.pre = load i64, ptr %_40.sroa.5.0.str.sroa_idx, align 8, !alias.scope !64
+  %self2.i.i.i.pre = load i64, ptr %str, align 8, !range !33, !alias.scope !69
+  br label %bb12
+
+bb12:                                             ; preds = %bb1.i33.bb12_crit_edge, %bb10, %bb29
+  %self2.i.i.i = phi i64 [ %self2.i.i.i.pre64, %bb29 ], [ %self2.i.i.i.pre, %bb1.i33.bb12_crit_edge ], [ %self2.i.i.i.pre64, %bb10 ]
+  %len.i.i.i = phi i64 [ %len.i.i.i.pre62, %bb29 ], [ %len.i.i.i.pre, %bb1.i33.bb12_crit_edge ], [ %len.i.i.i.pre62, %bb10 ]
+  %capacity.sroa.0.1 = phi i64 [ %capacity.sroa.0.051, %bb29 ], [ %48, %bb1.i33.bb12_crit_edge ], [ %48, %bb10 ]
+  call void @llvm.experimental.noalias.scope.decl(metadata !72)
+  call void @llvm.experimental.noalias.scope.decl(metadata !73)
+  %_10.i.i.i = sub i64 %self2.i.i.i, %len.i.i.i
+  %_7.i.i.i = icmp ult i64 %_10.i.i.i, 6
+  br i1 %_7.i.i.i, label %bb1.i.i.i, label %bb32, !prof !32
+
+bb1.i.i.i:                                        ; preds = %bb12
+; invoke alloc::raw_vec::RawVecInner&lt;A&gt;::reserve::do_reserve_and_handle
+  invoke fastcc void @"_ZN5alloc7raw_vec20RawVecInner$LT$A$GT$7reserve21do_reserve_and_handle17h0f49121d9a52801dE"(ptr noalias noundef nonnull align 8 dereferenceable(16) %str, i64 noundef %len.i.i.i, i64 noundef 6)
+          to label %.noexc36 unwind label %cleanup2.loopexit
+
+.noexc36:                                         ; preds = %bb1.i.i.i
+  %len.pre.i.i = load i64, ptr %_40.sroa.5.0.str.sroa_idx, align 8, !alias.scope !64
+  br label %bb32
+
+bb32:                                             ; preds = %.noexc36, %bb12
+  %len.i.i = phi i64 [ %len.i.i.i, %bb12 ], [ %len.pre.i.i, %.noexc36 ]
+  %_9.i.i = icmp sgt i64 %len.i.i, -1
+  call void @llvm.assume(i1 %_9.i.i)
+  %_10.i.i = load ptr, ptr %_40.sroa.4.0.str.sroa_idx, align 8, !alias.scope !64, !nonnull !4, !noundef !4
+  %dst.i.i = getelementptr inbounds i8, ptr %_10.i.i, i64 %len.i.i
+  call void @llvm.memcpy.p0.p0.i64(ptr noundef nonnull align 1 dereferenceable(6) %dst.i.i, ptr noundef nonnull align 1 dereferenceable(6) @alloc_67205f92287559ab7be9a96d10923d6c, i64 6, i1 false), !noalias !64
+  %49 = add nuw i64 %len.i.i, 6
+  store i64 %49, ptr %_40.sroa.5.0.str.sroa_idx, align 8, !alias.scope !64
+  %50 = add nuw nsw i64 %new_length.sroa.0.050, 6
+  %exitcond.not = icmp eq i32 %47, %n.sroa.0.0
+  br i1 %exitcond.not, label %bb30, label %bb29
+</code></pre>
+<p>The hottest of the loop is fully inlined into the main function and is a straightforward memory copy from the string literal <code>hello\n</code> into the string buffer with occasional size expansion through the <code>reverse</code> call.</p>
+<p>I believe that the fact that the <code>push_str</code> and <code>memcpy</code> functions are inlined in the Rust version explains the the performance difference.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="benchmarking-results"><a class="header" href="#benchmarking-results">Benchmarking results</a></h1>
+<div class="table-wrapper"><table><thead><tr><th>Program</th><th style="text-align: right">C++  (s)<sup class="footnote-reference" id="fr-1-1"><a href="#footnote-1">1</a></sup></th><th style="text-align: right">Rust (s)<sup class="footnote-reference" id="fr-2-1"><a href="#footnote-2">2</a></sup></th><th style="text-align: right">Ratio (x)<sup class="footnote-reference" id="fr-3-1"><a href="#footnote-3">3</a></sup></th></tr></thead><tbody>
+<tr><td><a href="./programs/ackermann.html">ackermann</a></td><td style="text-align: right">0.5849</td><td style="text-align: right">0.6696</td><td style="text-align: right">1.1448</td></tr>
+<tr><td><a href="./programs/ary.html">ary</a></td><td style="text-align: right">0.0403</td><td style="text-align: right">0.0430</td><td style="text-align: right">1.0679</td></tr>
+<tr><td><a href="./programs/ary2.html">ary2</a></td><td style="text-align: right">0.0414</td><td style="text-align: right">0.0422</td><td style="text-align: right">1.0194</td></tr>
+<tr><td><a href="./programs/ary3.html">ary3</a></td><td style="text-align: right">0.1707</td><td style="text-align: right">0.7217</td><td style="text-align: right"><strong>4.2281</strong></td></tr>
+<tr><td><a href="./programs/fibo.html">fibo</a></td><td style="text-align: right">1.1382</td><td style="text-align: right">1.2286</td><td style="text-align: right">1.0795</td></tr>
+<tr><td><a href="./programs/hash.html">hash</a></td><td style="text-align: right">0.2829</td><td style="text-align: right">0.2104</td><td style="text-align: right">0.7437</td></tr>
+<tr><td><a href="./programs/hash2.html">hash2</a></td><td style="text-align: right">1.1647</td><td style="text-align: right">0.8224</td><td style="text-align: right">0.7061</td></tr>
+<tr><td><a href="./programs/heapsort.html">heapsort</a></td><td style="text-align: right">1.5964</td><td style="text-align: right">1.6009</td><td style="text-align: right">1.0028</td></tr>
+<tr><td><a href="./programs/lists.html">lists</a></td><td style="text-align: right">1.8520</td><td style="text-align: right">1.7653</td><td style="text-align: right">0.9532</td></tr>
+<tr><td><a href="./programs/lists1.html">lists1</a></td><td style="text-align: right">0.1186</td><td style="text-align: right">0.0862</td><td style="text-align: right">0.7265</td></tr>
+<tr><td><a href="./programs/matrix.html">matrix</a></td><td style="text-align: right">0.9690</td><td style="text-align: right">2.0188</td><td style="text-align: right"><strong>2.0834</strong></td></tr>
+<tr><td><a href="./programs/methcall.html">methcall</a></td><td style="text-align: right">3.0316</td><td style="text-align: right">0.4226</td><td style="text-align: right"><strong>0.1394</strong></td></tr>
+<tr><td><a href="./programs/moments.html">moments</a></td><td style="text-align: right">0.0736</td><td style="text-align: right">0.0554</td><td style="text-align: right">0.7534</td></tr>
+<tr><td><a href="./programs/nestedloop.html">nestedloop</a></td><td style="text-align: right">0.0017</td><td style="text-align: right">0.0015</td><td style="text-align: right">0.8347</td></tr>
+<tr><td><a href="./programs/objinst.html">objinst</a></td><td style="text-align: right">0.0016</td><td style="text-align: right">0.0012</td><td style="text-align: right">0.7930</td></tr>
+<tr><td><a href="./programs/random.html">random</a></td><td style="text-align: right">1.2529</td><td style="text-align: right">1.0735</td><td style="text-align: right">0.8568</td></tr>
+<tr><td><a href="./programs/sieve.html">sieve</a></td><td style="text-align: right">0.9437</td><td style="text-align: right">0.9028</td><td style="text-align: right">0.9566</td></tr>
+<tr><td><a href="./programs/strcat.html">strcat</a></td><td style="text-align: right">0.0534</td><td style="text-align: right">0.0248</td><td style="text-align: right"><strong>0.4640</strong></td></tr>
+</tbody></table>
+</div>
+<p>The outliers are <a href="./programs/ary3.html#performance-analysis"><code>ary3</code></a>, <a href="./programs/matrix.html#performance-analysis"><code>matrix</code></a>, <a href="./programs/methcall.html#performance-analysis"><code>methcall</code></a> and <a href="./programs/strcat.html#performance-analysis"><code>strcat</code></a>.</p>
+<p>I examined the generated code for those to understand the performance differences.</p>
+<hr>
+<ol class="footnote-definition"><li id="footnote-1">
+<p>With Clang 20.1.5 on x86_64-pc-linux-gnu, the option <code>-O2</code>, over 30 runs, on an AMD Zen 2 CPU. <a href="#fr-1-1">↩</a></p>
+</li>
+<li id="footnote-2">
+<p>With Rustc 1.86.0 (05f9846f8 2025-03-31), the option <code>-O</code>, over 30 runs, on the same machine. <a href="#fr-2-1">↩</a></p>
+</li>
+<li id="footnote-3">
+<p>Ratios &gt; 1.0 indicates the Rust version was slower than the C++ version. Ratios &lt; 1.0 indicates the Rust version was faster than the C++ version. <a href="#fr-3-1">↩</a></p>
+</li>
+</ol>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
